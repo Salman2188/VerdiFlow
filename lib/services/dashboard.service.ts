@@ -1,5 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
-import { hasSupabaseEnv } from "@/lib/env";
+import "server-only";
+
 import {
   buildDashboardInsights,
   buildDashboardKpis,
@@ -11,12 +11,10 @@ import type { AiInsight } from "@/components/dashboard/insights";
 import type { KpiMetric } from "@/components/dashboard/kpi";
 import type { PipelineStage } from "@/components/dashboard/pipeline";
 
-async function fetchDashboardSourceData(): Promise<LeadRow[]> {
-  if (!hasSupabaseEnv()) {
-    return [];
-  }
+import { createServerSupabase } from "./server-supabase";
 
-  const supabase = await createClient();
+async function fetchDashboardSourceData(): Promise<LeadRow[]> {
+  const supabase = await createServerSupabase();
   const { data, error } = await supabase.from("leads").select("*");
 
   if (error) {

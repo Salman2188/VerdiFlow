@@ -55,10 +55,12 @@ export function AnimatedMetric({
     return () => cancelAnimationFrame(frame);
   }, [started, value]);
 
+  const shownValue = started ? display : value;
+
   const formatted =
     decimals > 0
-      ? display.toFixed(decimals).replace(".", ",")
-      : Math.round(display).toString();
+      ? shownValue.toFixed(decimals).replace(".", ",")
+      : Math.round(shownValue).toString();
 
   return (
     <span ref={ref} className="tabular-nums">

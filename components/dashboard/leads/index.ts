@@ -9,7 +9,6 @@ export { LeadQuickActions } from "./LeadQuickActions";
 export { LeadsEmptyState } from "./LeadsEmptyState";
 export { LeadsLoadingState } from "./LeadsLoadingState";
 export { LeadContactInfo } from "./LeadContactInfo";
-export { useLeads } from "./use-leads";
 export { DEFAULT_LEADS, SMART_FILTERS } from "./leads-data";
 export { filterLeads, computeLeadsStats, DEFAULT_LEADS_QUERY } from "./filter-utils";
 export type {

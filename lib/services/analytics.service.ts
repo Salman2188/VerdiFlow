@@ -1,9 +1,12 @@
+import "server-only";
+
 import { buildAnalyticsData } from "@/lib/mappers/analytics";
-import { getSupabaseClient } from "@/lib/supabase/get-client";
 import type { AnalyticsData } from "@/components/dashboard/analytics";
 
+import { createServerSupabase } from "./server-supabase";
+
 export async function getAnalytics(): Promise<AnalyticsData> {
-  const supabase = getSupabaseClient();
+  const supabase = await createServerSupabase();
 
   const [leadsResult, profilesResult, activitiesResult] = await Promise.all([
     supabase.from("leads").select("*"),

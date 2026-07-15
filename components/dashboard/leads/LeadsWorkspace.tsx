@@ -6,40 +6,29 @@ import { DEFAULT_LEADS_QUERY, filterLeads, computeLeadsStats } from "./filter-ut
 import { LeadCard } from "./LeadCard";
 import { LeadTable } from "./LeadTable";
 import { LeadsEmptyState } from "./LeadsEmptyState";
-import { LeadsLoadingState } from "./LeadsLoadingState";
 import { LeadsPageHeader } from "./LeadsPageHeader";
 import { LeadsToolbar } from "./LeadsToolbar";
-import { useLeads } from "./use-leads";
 import type { Lead, LeadsQuery } from "./types";
 
 type LeadsWorkspaceProps = {
-  /** Optional override for testing or SSR. Defaults to async mock fetch. */
-  initialLeads?: Lead[];
+  leads: Lead[];
 };
 
-export function LeadsWorkspace({ initialLeads }: LeadsWorkspaceProps) {
-  const { leads, isLoading, error } = useLeads(initialLeads);
+export function LeadsWorkspace({ leads }: LeadsWorkspaceProps) {
   const [query, setQuery] = useState<LeadsQuery>(DEFAULT_LEADS_QUERY);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      const frame = requestAnimationFrame(() => setReady(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setReady(false);
-  }, [isLoading]);
+    const frame = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   const filteredLeads = useMemo(() => filterLeads(leads, query), [leads, query]);
   const stats = useMemo(() => computeLeadsStats(leads), [leads]);
 
   const handleClearFilters = () => setQuery(DEFAULT_LEADS_QUERY);
 
-  if (isLoading) {
-    return <LeadsLoadingState />;
-  }
-
-  const hasNoLeads = leads.length === 0 && !error;
+  const hasNoLeads = leads.length === 0;
   const hasNoResults = !hasNoLeads && filteredLeads.length === 0;
 
   return (
@@ -67,12 +56,6 @@ export function LeadsWorkspace({ initialLeads }: LeadsWorkspaceProps) {
         />
 
         <div className="mt-6">
-          {error && (
-            <div className="mb-4 rounded-xl border border-rose-500/15 bg-rose-500/[0.06] px-4 py-3 text-[13px] text-rose-300/90">
-              {error}
-            </div>
-          )}
-
           {hasNoLeads && <LeadsEmptyState variant="no-leads" />}
 
           {hasNoResults && (

@@ -1,9 +1,12 @@
+import "server-only";
+
 import { mapKanbanLead } from "@/lib/mappers/lead";
-import { getSupabaseClient } from "@/lib/supabase/get-client";
 import type { KanbanBoard, KanbanColumnId } from "@/components/dashboard/pipeline-board";
 
+import { createServerSupabase } from "./server-supabase";
+
 export async function getPipelineBoard(): Promise<KanbanBoard> {
-  const supabase = getSupabaseClient();
+  const supabase = await createServerSupabase();
 
   const [stagesResult, leadsResult] = await Promise.all([
     supabase.from("pipeline_stages").select("*").order("sort_order", { ascending: true }),
@@ -34,23 +37,4 @@ export async function getPipelineBoard(): Promise<KanbanBoard> {
         .map(mapKanbanLead),
     })),
   };
-}
-
-export async function updateLeadColumn(
-  leadId: string,
-  columnId: KanbanColumnId,
-): Promise<void> {
-  const supabase = getSupabaseClient();
-
-  const { error } = await supabase
-    .from("leads")
-    .update({
-      pipeline_stage_id: columnId,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", leadId);
-
-  if (error) {
-    throw error;
-  }
 }

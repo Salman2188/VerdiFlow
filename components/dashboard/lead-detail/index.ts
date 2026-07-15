@@ -11,7 +11,6 @@ export { LeadDetailLoadingState } from "./LeadDetailLoadingState";
 export { LeadDetailNotFound } from "./LeadDetailNotFound";
 export { DetailSection } from "./DetailSection";
 export { getLeadDetailById } from "./lead-detail-data";
-export { useLeadDetail } from "./use-lead-detail";
 export type {
   LeadDetail,
   LeadAiSummary,

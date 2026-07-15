@@ -1,6 +1,9 @@
 import { LeadDetailWorkspace } from "@/components/dashboard/lead-detail";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { TopNav } from "@/components/dashboard/top-nav";
+import { getLeadDetail } from "@/lib/services/lead.service";
+
+export const dynamic = "force-dynamic";
 
 type LeadDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -8,6 +11,7 @@ type LeadDetailPageProps = {
 
 export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
   const { id } = await params;
+  const detail = await getLeadDetail(id);
 
   return (
     <div className="flex min-h-screen">
@@ -15,7 +19,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
       <div className="flex min-w-0 flex-1 flex-col">
         <TopNav />
         <main className="flex-1 px-6 py-8 lg:px-8 lg:py-10">
-          <LeadDetailWorkspace leadId={id} />
+          <LeadDetailWorkspace detail={detail} />
         </main>
       </div>
     </div>

@@ -5,45 +5,31 @@ import { useEffect, useState } from "react";
 import { LeadDetailActivityPanel } from "./LeadDetailActivityPanel";
 import { LeadDetailAiSummary } from "./LeadDetailAiSummary";
 import { LeadDetailHeader } from "./LeadDetailHeader";
-import { LeadDetailLoadingState } from "./LeadDetailLoadingState";
 import { LeadDetailMetrics } from "./LeadDetailMetrics";
 import { LeadDetailNotFound } from "./LeadDetailNotFound";
 import { LeadDetailProfile } from "./LeadDetailProfile";
 import { LeadDetailProperty } from "./LeadDetailProperty";
 import { LeadDetailTasks } from "./LeadDetailTasks";
 import { LeadDetailTimeline } from "./LeadDetailTimeline";
-import { useLeadDetail } from "./use-lead-detail";
+import type { LeadDetail } from "./types";
 
 type LeadDetailWorkspaceProps = {
-  leadId: string;
+  detail: LeadDetail | null;
 };
 
-export function LeadDetailWorkspace({ leadId }: LeadDetailWorkspaceProps) {
-  const { detail, isLoading, notFound, error } = useLeadDetail(leadId);
+export function LeadDetailWorkspace({ detail }: LeadDetailWorkspaceProps) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && detail) {
+    if (detail) {
       const frame = requestAnimationFrame(() => setReady(true));
       return () => cancelAnimationFrame(frame);
     }
     setReady(false);
-  }, [isLoading, detail]);
-
-  if (isLoading) {
-    return <LeadDetailLoadingState />;
-  }
-
-  if (notFound) {
-    return <LeadDetailNotFound />;
-  }
+  }, [detail]);
 
   if (!detail) {
-    return (
-      <div className="rounded-xl border border-rose-500/15 bg-rose-500/[0.06] px-4 py-3 text-[13px] text-rose-300/90">
-        {error ?? "Noe gikk galt."}
-      </div>
-    );
+    return <LeadDetailNotFound />;
   }
 
   return (

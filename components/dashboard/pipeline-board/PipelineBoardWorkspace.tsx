@@ -4,27 +4,24 @@ import { useEffect, useMemo, useState } from "react";
 
 import { computePipelineBoardStats } from "./board-utils";
 import { PipelineBoardHeader } from "./PipelineBoardHeader";
-import { PipelineBoardLoadingState } from "./PipelineBoardLoadingState";
 import { PipelineKanbanBoard } from "./PipelineKanbanBoard";
 import { usePipelineBoard } from "./use-pipeline-board";
+import type { KanbanBoard } from "./types";
 
-export function PipelineBoardWorkspace() {
-  const { board, isLoading, moveLead } = usePipelineBoard();
+type PipelineBoardWorkspaceProps = {
+  initialBoard: KanbanBoard;
+};
+
+export function PipelineBoardWorkspace({ initialBoard }: PipelineBoardWorkspaceProps) {
+  const { board, moveLead } = usePipelineBoard(initialBoard);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      const frame = requestAnimationFrame(() => setReady(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setReady(false);
-  }, [isLoading]);
+    const frame = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   const stats = useMemo(() => computePipelineBoardStats(board), [board]);
-
-  if (isLoading) {
-    return <PipelineBoardLoadingState />;
-  }
 
   return (
     <div

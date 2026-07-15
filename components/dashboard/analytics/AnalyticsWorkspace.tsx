@@ -2,30 +2,25 @@
 
 import { useEffect, useState } from "react";
 
+import type { AnalyticsData } from "./types";
 import { AnalyticsAgentLeaderboard } from "./AnalyticsAgentLeaderboard";
 import { AnalyticsAiPerformance } from "./AnalyticsAiPerformance";
 import { AnalyticsForecastCard } from "./AnalyticsForecast";
 import { AnalyticsHeader } from "./AnalyticsHeader";
-import { AnalyticsLoadingState } from "./AnalyticsLoadingState";
 import { AnalyticsPerformance } from "./AnalyticsPerformance";
 import { AnalyticsWeeklyInsights } from "./AnalyticsWeeklyInsights";
-import { useAnalytics } from "./use-analytics";
 
-export function AnalyticsWorkspace() {
-  const { data, isLoading } = useAnalytics();
+type AnalyticsWorkspaceProps = {
+  initialData: AnalyticsData;
+};
+
+export function AnalyticsWorkspace({ initialData }: AnalyticsWorkspaceProps) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      const frame = requestAnimationFrame(() => setReady(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setReady(false);
-  }, [isLoading]);
-
-  if (isLoading || !data) {
-    return <AnalyticsLoadingState />;
-  }
+    const frame = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   return (
     <div
@@ -33,16 +28,16 @@ export function AnalyticsWorkspace() {
         ready ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
       }`}
     >
-      <AnalyticsHeader kpis={data.topKpis} />
+      <AnalyticsHeader kpis={initialData.topKpis} />
       <AnalyticsPerformance
-        chartLabels={data.salesChart.labels}
-        chartSeries={data.salesChart.series}
-        leadSources={data.leadSources}
+        chartLabels={initialData.salesChart.labels}
+        chartSeries={initialData.salesChart.series}
+        leadSources={initialData.leadSources}
       />
-      <AnalyticsAiPerformance metrics={data.aiPerformance} />
-      <AnalyticsAgentLeaderboard agents={data.agentLeaderboard} />
-      <AnalyticsWeeklyInsights insights={data.weeklyInsights} />
-      <AnalyticsForecastCard forecast={data.forecast} />
+      <AnalyticsAiPerformance metrics={initialData.aiPerformance} />
+      <AnalyticsAgentLeaderboard agents={initialData.agentLeaderboard} />
+      <AnalyticsWeeklyInsights insights={initialData.weeklyInsights} />
+      <AnalyticsForecastCard forecast={initialData.forecast} />
     </div>
   );
 }

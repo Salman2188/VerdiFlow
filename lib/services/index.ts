@@ -1,5 +1,6 @@
 export { getLeads, getLeadDetail } from "./lead.service";
-export { getPipelineBoard, updateLeadColumn } from "./pipeline.service";
+export { getPipelineBoard } from "./pipeline.service";
+export { updateLeadColumn } from "./pipeline-mutations";
 export { getAnalytics } from "./analytics.service";
 export {
   getDashboardInsights,

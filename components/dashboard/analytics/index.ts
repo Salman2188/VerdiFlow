@@ -8,7 +8,6 @@ export { AnalyticsForecastCard } from "./AnalyticsForecast";
 export { AnalyticsLineChart } from "./AnalyticsLineChart";
 export { AnalyticsLoadingState } from "./AnalyticsLoadingState";
 export { DEFAULT_ANALYTICS_DATA } from "./analytics-data";
-export { useAnalytics } from "./use-analytics";
 export type {
   AnalyticsData,
   AnalyticsTopKpi,

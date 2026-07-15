@@ -1,10 +1,13 @@
+import "server-only";
+
 import type { LeadDetail } from "@/components/dashboard/lead-detail";
 import type { Lead } from "@/components/dashboard/leads";
 import { mapLeadDetail, mapLeadRow } from "@/lib/mappers/lead";
-import { getSupabaseClient } from "@/lib/supabase/get-client";
+
+import { createServerSupabase } from "./server-supabase";
 
 export async function getLeads(): Promise<Lead[]> {
-  const supabase = getSupabaseClient();
+  const supabase = await createServerSupabase();
 
   const { data, error } = await supabase
     .from("leads")
@@ -19,7 +22,7 @@ export async function getLeads(): Promise<Lead[]> {
 }
 
 export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
-  const supabase = getSupabaseClient();
+  const supabase = await createServerSupabase();
 
   const { data: lead, error: leadError } = await supabase
     .from("leads")
