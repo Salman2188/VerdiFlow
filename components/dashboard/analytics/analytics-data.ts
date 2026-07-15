@@ -1,14 +1,3 @@
-import {
-  Bot,
-  Clock,
-  FileCheck,
-  MessageSquare,
-  Share2,
-  Timer,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
-
 import type { AnalyticsData } from "./types";
 
 const CHART_LABELS = [
@@ -92,35 +81,35 @@ export const DEFAULT_ANALYTICS_DATA: AnalyticsData = {
       label: "Oppfølginger generert",
       value: "142",
       trend: { value: "+28%", positive: true },
-      icon: MessageSquare,
+      icon: "message-square",
     },
     {
       id: "time-saved",
       label: "Tid spart",
       value: "19t",
       trend: { value: "+4t", positive: true },
-      icon: Clock,
+      icon: "clock",
     },
     {
       id: "drafts-approved",
       label: "AI-utkast godkjent",
       value: "87%",
       trend: { value: "+6%", positive: true },
-      icon: FileCheck,
+      icon: "file-check",
     },
     {
       id: "automations",
       label: "Automatiseringer kjørt",
       value: "312",
       trend: { value: "+22%", positive: true },
-      icon: Zap,
+      icon: "zap",
     },
     {
       id: "response-time",
       label: "Gjennomsnittlig svartid",
       value: "12 min",
       trend: { value: "-34%", positive: true },
-      icon: Timer,
+      icon: "timer",
     },
   ],
   agentLeaderboard: [
@@ -172,28 +161,28 @@ export const DEFAULT_ANALYTICS_DATA: AnalyticsData = {
       title: "Instagram gir nå 28% flere varme leads.",
       recommendation: "Øk budsjett for sosiale kampanjer med 15% neste uke.",
       confidence: 91,
-      icon: Share2,
+      icon: "share-2",
     },
     {
       id: "insight-2",
       title: "Responstid falt med 34%.",
       recommendation: "Behold AI-automatisering for første kontakt på nye leads.",
       confidence: 94,
-      icon: Timer,
+      icon: "timer",
     },
     {
       id: "insight-3",
       title: "Pipeline økte med 18%.",
       recommendation: "Fokuser på forhandlingsfasen — 4 leads nær lukking.",
       confidence: 87,
-      icon: TrendingUp,
+      icon: "trending-up",
     },
     {
       id: "insight-4",
       title: "AI sparte totalt 19 timer denne uken.",
       recommendation: "Gjennomgå 6 ventende AI-utkast for raskere oppfølging.",
       confidence: 96,
-      icon: Bot,
+      icon: "bot",
     },
   ],
   forecast: {

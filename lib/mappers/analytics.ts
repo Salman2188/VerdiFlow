@@ -1,14 +1,3 @@
-import {
-  Bot,
-  Clock,
-  FileCheck,
-  MessageSquare,
-  Share2,
-  Timer,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
-
 import type { AnalyticsData } from "@/components/dashboard/analytics";
 import type { AiInsight } from "@/components/dashboard/insights";
 import type { KpiMetric } from "@/components/dashboard/kpi";
@@ -331,35 +320,35 @@ export function buildAnalyticsData(
         label: "Oppfølginger generert",
         value: String(Math.max(activityCount, total * 3)),
         trend: positiveTrend("+28%"),
-        icon: MessageSquare,
+        icon: "message-square",
       },
       {
         id: "time-saved",
         label: "Tid spart",
         value: `${Math.max(8, Math.round(averageAiScore / 5))}t`,
         trend: positiveTrend(`+${Math.max(2, Math.round(averageAiScore / 20))}t`),
-        icon: Clock,
+        icon: "clock",
       },
       {
         id: "drafts-approved",
         label: "AI-utkast godkjent",
         value: `${Math.min(95, Math.max(70, averageAiScore - 5))}%`,
         trend: positiveTrend("+6%"),
-        icon: FileCheck,
+        icon: "file-check",
       },
       {
         id: "automations",
         label: "Automatiseringer kjørt",
         value: String(Math.max(activityCount * 2, total * 8)),
         trend: positiveTrend("+22%"),
-        icon: Zap,
+        icon: "zap",
       },
       {
         id: "response-time",
         label: "Gjennomsnittlig svartid",
         value: "12 min",
         trend: { value: "-34%", positive: true },
-        icon: Timer,
+        icon: "timer",
       },
     ],
     agentLeaderboard: profiles
@@ -379,28 +368,28 @@ export function buildAnalyticsData(
         title: `${leadSources[0]?.label ?? "Finn.no"} gir nå ${leadSources[0]?.percentage ?? 0}% av leads.`,
         recommendation: "Øk budsjett for beste konverteringskanal neste uke.",
         confidence: 91,
-        icon: Share2,
+        icon: "share-2",
       },
       {
         id: "insight-response",
         title: "Responstid falt med 34%.",
         recommendation: "Behold AI-automatisering for første kontakt på nye leads.",
         confidence: 94,
-        icon: Timer,
+        icon: "timer",
       },
       {
         id: "insight-pipeline",
         title: `Pipeline økte med ${Math.max(8, Math.round(pipelineValue / 4))}%.`,
         recommendation: `Fokuser på forhandlingsfasen — ${hotCount} leads nær lukking.`,
         confidence: 87,
-        icon: TrendingUp,
+        icon: "trending-up",
       },
       {
         id: "insight-ai",
         title: `AI sparte totalt ${Math.max(8, Math.round(averageAiScore / 5))} timer denne uken.`,
         recommendation: `Gjennomgå ${Math.max(2, Math.round(total / 2))} ventende AI-utkast for raskere oppfølging.`,
         confidence: 96,
-        icon: Bot,
+        icon: "bot",
       },
     ],
     forecast: {

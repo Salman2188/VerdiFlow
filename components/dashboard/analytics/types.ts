@@ -1,5 +1,4 @@
-import type { LucideIcon } from "lucide-react";
-
+import type { AnalyticsIconName } from "@/components/dashboard/analytics/icon-registry";
 import type { KpiIconName } from "@/components/dashboard/kpi/icon-registry";
 
 export type AnalyticsTrend = {
@@ -39,7 +38,7 @@ export type AiPerformanceMetric = {
   label: string;
   value: string;
   trend: AnalyticsTrend;
-  icon: LucideIcon;
+  icon: AnalyticsIconName;
 };
 
 export type AgentPerformance = {
@@ -57,7 +56,7 @@ export type WeeklyInsight = {
   title: string;
   recommendation: string;
   confidence: number;
-  icon: LucideIcon;
+  icon: AnalyticsIconName;
 };
 
 export type AnalyticsForecast = {

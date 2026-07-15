@@ -1,6 +1,7 @@
 import { Sparkles, TrendingDown, TrendingUp } from "lucide-react";
 
 import { AiSection } from "@/components/dashboard/ai-assistant/AiSection";
+import { getAnalyticsIcon } from "@/components/dashboard/analytics/icon-registry";
 
 import type { AiPerformanceMetric } from "./types";
 
@@ -18,7 +19,7 @@ export function AnalyticsAiPerformance({ metrics }: AnalyticsAiPerformanceProps)
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {metrics.map((metric) => {
-          const Icon = metric.icon;
+          const Icon = getAnalyticsIcon(metric.icon);
           const TrendIcon = metric.trend.positive ? TrendingUp : TrendingDown;
 
           return (

@@ -1,6 +1,7 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { AiSection } from "@/components/dashboard/ai-assistant/AiSection";
+import { getAnalyticsIcon } from "@/components/dashboard/analytics/icon-registry";
 
 import type { WeeklyInsight } from "./types";
 
@@ -18,7 +19,7 @@ export function AnalyticsWeeklyInsights({ insights }: AnalyticsWeeklyInsightsPro
     >
       <div className="grid gap-4 sm:grid-cols-2">
         {insights.map((insight) => {
-          const Icon = insight.icon;
+          const Icon = getAnalyticsIcon(insight.icon);
           return (
             <article
               key={insight.id}
