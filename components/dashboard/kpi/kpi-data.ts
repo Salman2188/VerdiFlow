@@ -1,0 +1,56 @@
+import type { KpiMetric } from "./types";
+
+export const DEFAULT_KPI_METRICS: KpiMetric[] = [
+  {
+    id: "active-leads",
+    label: "Aktive leads",
+    value: 148,
+    trend: { value: "+12%", positive: true },
+    sparkline: [98, 112, 105, 128, 118, 135, 148],
+    icon: "users",
+  },
+  {
+    id: "pipeline-value",
+    label: "Pipeline-verdi",
+    value: 24.5,
+    suffix: "M kr",
+    decimals: 1,
+    trend: { value: "+18%", positive: true },
+    sparkline: [16, 18, 17, 20, 21, 23, 24.5],
+    icon: "trending-up",
+  },
+  {
+    id: "hot-leads",
+    label: "Hot leads",
+    value: 23,
+    trend: { value: "+8%", positive: true },
+    sparkline: [14, 16, 15, 18, 19, 21, 23],
+    icon: "flame",
+  },
+  {
+    id: "ai-time-saved",
+    label: "Tid spart av AI",
+    value: 14,
+    suffix: "t",
+    trend: { value: "+3t", positive: true },
+    sparkline: [6, 8, 9, 10, 11, 12, 14],
+    icon: "clock",
+  },
+  {
+    id: "showings",
+    label: "Visninger denne uken",
+    value: 7,
+    trend: { value: "+2", positive: true },
+    sparkline: [3, 4, 3, 5, 4, 6, 7],
+    icon: "calendar",
+  },
+  {
+    id: "conversion-rate",
+    label: "Konverteringsrate",
+    value: 31,
+    suffix: "%",
+    trend: { value: "+5%", positive: true },
+    sparkline: [22, 24, 23, 26, 28, 29, 31],
+    icon: "percent",
+  },
+];
