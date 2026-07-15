@@ -1,15 +1,21 @@
 import { createClient } from "@/lib/supabase/server";
+import { hasSupabaseEnv } from "@/lib/env";
 import {
   buildDashboardInsights,
   buildDashboardKpis,
   buildDashboardPipelinePreview,
 } from "@/lib/mappers/analytics";
 
+import type { LeadRow } from "@/types/database";
 import type { AiInsight } from "@/components/dashboard/insights";
 import type { KpiMetric } from "@/components/dashboard/kpi";
 import type { PipelineStage } from "@/components/dashboard/pipeline";
 
-async function fetchDashboardSourceData() {
+async function fetchDashboardSourceData(): Promise<LeadRow[]> {
+  if (!hasSupabaseEnv()) {
+    return [];
+  }
+
   const supabase = await createClient();
   const { data, error } = await supabase.from("leads").select("*");
 
