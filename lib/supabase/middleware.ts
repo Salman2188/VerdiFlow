@@ -39,7 +39,7 @@ async function getOnboardingStep(
 
   if (error) {
     if (error.code === "PGRST205" || error.message.includes("does not exist")) {
-      return "connect_instagram";
+      return null;
     }
 
     return null;
