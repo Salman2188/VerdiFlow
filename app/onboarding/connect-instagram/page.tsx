@@ -1,6 +1,7 @@
 import { AtSign, ShieldCheck, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 
+import { signOutAction } from "@/lib/auth/actions";
 import { requireVerifiedUser } from "@/lib/auth/server";
 
 export const metadata: Metadata = {
@@ -79,6 +80,15 @@ export default async function ConnectInstagramPage() {
             </button>
           </div>
         </div>
+
+        <form action={signOutAction} className="mt-6 text-center">
+          <button
+            type="submit"
+            className="text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-300"
+          >
+            Sign out
+          </button>
+        </form>
       </div>
     </div>
   );

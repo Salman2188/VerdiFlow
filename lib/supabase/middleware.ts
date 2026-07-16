@@ -91,7 +91,12 @@ export async function updateSession(request: NextRequest) {
     return buildLoginRedirect(request);
   }
 
-  if (!user && (isVerifyEmailRoute || isResetPasswordRoute)) {
+  if (!user && isVerifyEmailRoute) {
+    const hasEmailHint = request.nextUrl.searchParams.has("email");
+    if (!hasEmailHint) {
+      return buildLoginRedirect(request);
+    }
+  } else if (!user && isResetPasswordRoute) {
     return buildLoginRedirect(request);
   }
 

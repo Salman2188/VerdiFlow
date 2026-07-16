@@ -246,5 +246,5 @@ export async function signOutAction() {
 }
 
 export async function continueAfterVerificationAction() {
-  await resolvePostAuthRedirect(ONBOARDING_ROUTES.connectInstagram);
+  redirect(AUTH_ROUTES.login);
 }

@@ -5,7 +5,6 @@ import { useActionState } from "react";
 
 import { AuthAlert, AuthButton, AuthShell } from "@/components/auth";
 import {
-  continueAfterVerificationAction,
   resendVerificationAction,
   signOutAction,
   type AuthActionState,
@@ -57,13 +56,15 @@ export function VerifyEmailPanel({ email }: VerifyEmailPanelProps) {
         {state.success ? <AuthAlert tone="success" message={state.success} /> : null}
 
         <p className="text-sm leading-6 text-zinc-400">
-          After verifying, return here and continue. If you already verified in another tab, use
-          the button below.
+          After verifying your email, sign in to continue to Instagram onboarding.
         </p>
 
-        <form action={continueAfterVerificationAction}>
-          <AuthButton>I verified my email</AuthButton>
-        </form>
+        <Link
+          href="/login"
+          className="inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-emerald-950 transition-all hover:bg-emerald-400"
+        >
+          Continue to sign in
+        </Link>
 
         {email ? (
           <form action={resendAction} className="space-y-3">
