@@ -31,11 +31,19 @@ async function getOnboardingStep(
   supabase: ReturnType<typeof createServerClient<Database>>,
   userId: string,
 ): Promise<OnboardingStep | null> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("user_onboarding")
     .select("current_step")
     .eq("user_id", userId)
     .maybeSingle();
+
+  if (error) {
+    if (error.code === "PGRST205" || error.message.includes("does not exist")) {
+      return "connect_instagram";
+    }
+
+    return null;
+  }
 
   return data?.current_step ?? null;
 }

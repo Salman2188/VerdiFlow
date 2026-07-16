@@ -30,7 +30,7 @@ export default async function HomePage() {
   redirect(
     getPostAuthRedirect({
       user,
-      onboardingStep: onboarding.current_step,
+      onboardingStep: onboarding?.current_step ?? "connect_instagram",
     }),
   );
 }

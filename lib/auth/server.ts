@@ -67,10 +67,9 @@ export async function requireVerifiedUserForPath(pathname: string): Promise<User
   const onboarding =
     (await getOnboardingState(user.id)) ?? (await ensureOnboardingRow(user.id));
 
-  if (
-    onboarding.current_step === "connect_instagram" &&
-    pathname.startsWith("/dashboard")
-  ) {
+  const currentStep = onboarding?.current_step ?? "connect_instagram";
+
+  if (currentStep === "connect_instagram" && pathname.startsWith("/dashboard")) {
     redirect(ONBOARDING_ROUTES.connectInstagram);
   }
 

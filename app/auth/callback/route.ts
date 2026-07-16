@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { sanitizeNextPath } from "@/lib/auth/routes";
 import {
   ensureOnboardingRow,
+  getOnboardingState,
   syncEmailVerificationStep,
 } from "@/lib/auth/onboarding";
 import { getPostAuthRedirect, isEmailVerified } from "@/lib/auth/session";
@@ -39,15 +40,12 @@ export async function GET(request: Request) {
     await syncEmailVerificationStep(user.id, user.email_confirmed_at);
   }
 
-  const { data: onboarding } = await supabase
-    .from("user_onboarding")
-    .select("current_step")
-    .eq("user_id", user.id)
-    .maybeSingle();
+  const onboarding =
+    (await getOnboardingState(user.id)) ?? (await ensureOnboardingRow(user.id));
 
   const destination = getPostAuthRedirect({
     user,
-    onboardingStep: onboarding?.current_step ?? "verify_email",
+    onboardingStep: onboarding?.current_step ?? (isEmailVerified(user) ? "connect_instagram" : "verify_email"),
     next,
   });
 

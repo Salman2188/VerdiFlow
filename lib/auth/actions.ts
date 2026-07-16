@@ -72,7 +72,7 @@ async function resolvePostAuthRedirect(next?: string | null) {
   redirect(
     getPostAuthRedirect({
       user,
-      onboardingStep: onboarding.current_step,
+      onboardingStep: onboarding?.current_step ?? "connect_instagram",
       next,
     }),
   );
@@ -152,7 +152,7 @@ export async function signInAction(
   redirect(
     getPostAuthRedirect({
       user: data.user,
-      onboardingStep: onboarding.current_step,
+      onboardingStep: onboarding?.current_step ?? "connect_instagram",
       next,
     }),
   );

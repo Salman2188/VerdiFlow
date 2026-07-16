@@ -3,6 +3,10 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { OnboardingStep, UserOnboardingRow } from "@/types/database";
 
+function isMissingOnboardingTable(error: { code?: string; message?: string }) {
+  return error.code === "PGRST205" || Boolean(error.message?.includes("does not exist"));
+}
+
 export async function getOnboardingState(userId: string): Promise<UserOnboardingRow | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -12,6 +16,10 @@ export async function getOnboardingState(userId: string): Promise<UserOnboarding
     .maybeSingle();
 
   if (error) {
+    if (isMissingOnboardingTable(error)) {
+      return null;
+    }
+
     throw error;
   }
 
@@ -20,11 +28,19 @@ export async function getOnboardingState(userId: string): Promise<UserOnboarding
 
 export async function syncEmailVerificationStep(userId: string, verifiedAt: string) {
   const supabase = await createClient();
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await supabase
     .from("user_onboarding")
     .select("current_step, email_verified_at")
     .eq("user_id", userId)
     .maybeSingle();
+
+  if (existingError) {
+    if (isMissingOnboardingTable(existingError)) {
+      return null;
+    }
+
+    throw existingError;
+  }
 
   if (existing?.email_verified_at) {
     return existing;
@@ -45,6 +61,10 @@ export async function syncEmailVerificationStep(userId: string, verifiedAt: stri
     .maybeSingle();
 
   if (error) {
+    if (isMissingOnboardingTable(error)) {
+      return null;
+    }
+
     throw error;
   }
 
@@ -53,11 +73,19 @@ export async function syncEmailVerificationStep(userId: string, verifiedAt: stri
 
 export async function ensureOnboardingRow(userId: string) {
   const supabase = await createClient();
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await supabase
     .from("user_onboarding")
     .select("*")
     .eq("user_id", userId)
     .maybeSingle();
+
+  if (existingError) {
+    if (isMissingOnboardingTable(existingError)) {
+      return null;
+    }
+
+    throw existingError;
+  }
 
   if (existing) {
     return existing;
@@ -70,6 +98,10 @@ export async function ensureOnboardingRow(userId: string) {
     .single();
 
   if (error) {
+    if (isMissingOnboardingTable(error)) {
+      return null;
+    }
+
     throw error;
   }
 
