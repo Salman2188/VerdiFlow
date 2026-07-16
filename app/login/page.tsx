@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
+import { AuthHashHandler } from "@/components/auth/AuthHashHandler";
 import { LoginForm } from "@/components/auth/LoginForm";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <Suspense fallback={null}>
+      <AuthHashHandler />
       <LoginForm next={params.next} error={params.error} />
     </Suspense>
   );

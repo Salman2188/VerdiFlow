@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
+import { AuthHashHandler } from "@/components/auth/AuthHashHandler";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 
 export const metadata: Metadata = {
@@ -7,5 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default function ResetPasswordPage() {
-  return <ResetPasswordForm />;
+  return (
+    <>
+      <Suspense fallback={null}>
+        <AuthHashHandler />
+      </Suspense>
+      <ResetPasswordForm />
+    </>
+  );
 }
