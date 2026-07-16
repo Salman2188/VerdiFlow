@@ -524,7 +524,7 @@ export default function Home() {
             ))}
           </div>
           <a
-            href="#cta"
+            href="/signup"
             className="rounded-[0.75rem] bg-gradient-to-b from-emerald-300 to-emerald-600 px-5 py-2.5 text-[13px] font-semibold text-zinc-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_4px_20px_rgba(16,185,129,0.3)] transition-all duration-[400ms] hover:-translate-y-px hover:shadow-[0_6px_28px_rgba(16,185,129,0.4)]"
           >
             Start Free
@@ -568,7 +568,7 @@ export default function Home() {
             </p>
 
             <div className="mt-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-              <PrimaryButton href="#cta" breathe className="w-full sm:w-auto">
+              <PrimaryButton href="/signup" breathe className="w-full sm:w-auto">
                 Start Free
               </PrimaryButton>
               <OutlineButton href="#book-demo" className="w-full sm:w-auto">
@@ -1062,7 +1062,7 @@ export default function Home() {
                     more deals. Start free — no credit card required.
                   </p>
                   <div className="mt-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-                    <PrimaryButton href="#" breathe className="h-[3.75rem] w-full px-14 text-lg sm:w-auto">
+                    <PrimaryButton href="/signup" breathe className="h-[3.75rem] w-full px-14 text-lg sm:w-auto">
                       Start Free
                     </PrimaryButton>
                     <OutlineButton href="#" id="book-demo" className="h-[3.75rem] w-full px-14 text-lg sm:w-auto">

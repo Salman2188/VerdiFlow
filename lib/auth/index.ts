@@ -23,3 +23,5 @@ export async function getCurrentUser() {
 
   return user;
 }
+
+export { signOutAction } from "@/lib/auth/actions";

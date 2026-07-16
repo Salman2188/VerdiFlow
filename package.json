@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "node scripts/run-seed.mjs",
-    "verify:supabase": "node scripts/verify-supabase.mjs"
+    "verify:supabase": "node scripts/verify-supabase.mjs",
+    "verify:auth-schema": "node scripts/verify-auth-schema.mjs",
+    "migrate:auth": "node scripts/apply-auth-migration.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

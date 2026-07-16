@@ -1,7 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ChevronDown, LogOut, Settings, User } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+
+import { signOutAction } from "@/lib/auth/actions";
 
 import type { TopNavUser } from "./types";
 
@@ -17,7 +20,9 @@ const MENU_ITEMS = [
 
 export function TopNavProfileMenu({ user }: TopNavProfileMenuProps) {
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!open) return;
@@ -85,10 +90,25 @@ export function TopNavProfileMenu({ user }: TopNavProfileMenuProps) {
                 key={item.label}
                 type="button"
                 role="menuitem"
-                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-zinc-400 transition-colors duration-300 hover:bg-white/[0.04] hover:text-zinc-200"
+                disabled={isPending}
+                onClick={() => {
+                  setOpen(false);
+
+                  if (item.label === "Sign out") {
+                    startTransition(async () => {
+                      await signOutAction();
+                    });
+                    return;
+                  }
+
+                  if (item.label === "Settings") {
+                    router.push("/dashboard/settings");
+                  }
+                }}
+                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-zinc-400 transition-colors duration-300 hover:bg-white/[0.04] hover:text-zinc-200 disabled:opacity-60"
               >
                 <item.icon className="h-4 w-4" strokeWidth={1.75} />
-                {item.label}
+                {item.label === "Sign out" && isPending ? "Signing out..." : item.label}
               </button>
             ))}
           </div>

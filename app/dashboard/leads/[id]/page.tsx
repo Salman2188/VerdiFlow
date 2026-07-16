@@ -1,6 +1,5 @@
 import { LeadDetailWorkspace } from "@/components/dashboard/lead-detail";
-import { Sidebar } from "@/components/dashboard/sidebar";
-import { TopNav } from "@/components/dashboard/top-nav";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { getLeadDetail } from "@/lib/services/lead.service";
 
 export const dynamic = "force-dynamic";
@@ -14,14 +13,8 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
   const detail = await getLeadDetail(id);
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <TopNav />
-        <main className="flex-1 px-6 py-8 lg:px-8 lg:py-10">
-          <LeadDetailWorkspace detail={detail} />
-        </main>
-      </div>
-    </div>
+    <DashboardShell pathname={`/dashboard/leads/${id}`}>
+      <LeadDetailWorkspace detail={detail} />
+    </DashboardShell>
   );
 }

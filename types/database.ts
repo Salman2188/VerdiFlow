@@ -17,6 +17,33 @@ export type ActivityType =
   | "task"
   | "status";
 
+export type OnboardingStep = "verify_email" | "connect_instagram" | "completed";
+
+export type WorkspaceRow = {
+  id: string;
+  name: string;
+  owner_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type WorkspaceMemberRow = {
+  workspace_id: string;
+  user_id: string;
+  role: string;
+  created_at: string;
+};
+
+export type UserOnboardingRow = {
+  user_id: string;
+  current_step: OnboardingStep;
+  email_verified_at: string | null;
+  instagram_connected_at: string | null;
+  onboarding_completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ProfileRow = {
   id: string;
   full_name: string;
@@ -179,6 +206,24 @@ export type Database = {
           },
         ];
       };
+      workspaces: {
+        Row: WorkspaceRow;
+        Insert: Partial<WorkspaceRow> & Pick<WorkspaceRow, "name" | "owner_id">;
+        Update: Partial<WorkspaceRow>;
+        Relationships: [];
+      };
+      workspace_members: {
+        Row: WorkspaceMemberRow;
+        Insert: WorkspaceMemberRow;
+        Update: Partial<WorkspaceMemberRow>;
+        Relationships: [];
+      };
+      user_onboarding: {
+        Row: UserOnboardingRow;
+        Insert: Partial<UserOnboardingRow> & Pick<UserOnboardingRow, "user_id">;
+        Update: Partial<UserOnboardingRow>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -186,6 +231,7 @@ export type Database = {
       lead_stage: LeadStage;
       lead_priority: LeadPriority;
       activity_type: ActivityType;
+      onboarding_step: OnboardingStep;
     };
     CompositeTypes: Record<string, never>;
   };
