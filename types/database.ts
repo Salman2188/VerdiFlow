@@ -44,6 +44,20 @@ export type UserOnboardingRow = {
   updated_at: string;
 };
 
+export type InstagramConnectionRow = {
+  id: string;
+  workspace_id: string;
+  user_id: string;
+  instagram_account_id: string;
+  instagram_username: string | null;
+  facebook_page_id: string;
+  facebook_page_name: string | null;
+  access_token: string;
+  token_expires_at: string | null;
+  connected_at: string;
+  updated_at: string;
+};
+
 export type ProfileRow = {
   id: string;
   full_name: string;
@@ -223,6 +237,20 @@ export type Database = {
         Row: UserOnboardingRow;
         Insert: Partial<UserOnboardingRow> & Pick<UserOnboardingRow, "user_id">;
         Update: Partial<UserOnboardingRow>;
+        Relationships: [];
+      };
+      instagram_connections: {
+        Row: InstagramConnectionRow;
+        Insert: Partial<InstagramConnectionRow> &
+          Pick<
+            InstagramConnectionRow,
+            | "workspace_id"
+            | "user_id"
+            | "instagram_account_id"
+            | "facebook_page_id"
+            | "access_token"
+          >;
+        Update: Partial<InstagramConnectionRow>;
         Relationships: [];
       };
     };
