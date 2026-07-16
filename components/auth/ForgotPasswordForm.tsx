@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 import { AuthAlert, AuthButton, AuthField, AuthShell } from "@/components/auth";
+import { useEmailResendCooldown } from "@/components/auth/useEmailResendCooldown";
 import { forgotPasswordAction, type AuthActionState } from "@/lib/auth/actions";
 
 const INITIAL_STATE: AuthActionState = {};
 
 export function ForgotPasswordForm() {
   const [state, formAction, pending] = useActionState(forgotPasswordAction, INITIAL_STATE);
+  const { cooldown, isCoolingDown, startCooldown } = useEmailResendCooldown();
+
+  useEffect(() => {
+    if (state.error || state.success) {
+      startCooldown();
+    }
+  }, [state.error, state.success, startCooldown]);
 
   return (
     <AuthShell
@@ -37,7 +45,9 @@ export function ForgotPasswordForm() {
           required
         />
 
-        <AuthButton loading={pending}>Send reset link</AuthButton>
+        <AuthButton loading={pending} disabled={isCoolingDown}>
+          {isCoolingDown ? `Send again in ${cooldown}s` : "Send reset link"}
+        </AuthButton>
       </form>
     </AuthShell>
   );

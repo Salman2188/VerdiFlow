@@ -70,6 +70,7 @@ export type PipelineStageRow = {
 
 export type LeadRow = {
   id: string;
+  workspace_id: string | null;
   customer_name: string;
   email: string | null;
   phone: string | null;

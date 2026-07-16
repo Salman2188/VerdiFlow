@@ -19,3 +19,7 @@ export function getPasswordResetRedirectUrl() {
 export function getSignupEmailRedirectUrl() {
   return getAuthCallbackUrl("/onboarding/connect-instagram");
 }
+
+export function getMagicLinkRedirectUrl(next?: string) {
+  return getAuthCallbackUrl(next);
+}

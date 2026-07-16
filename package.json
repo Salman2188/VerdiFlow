@@ -11,7 +11,15 @@
     "verify:supabase": "node scripts/verify-supabase.mjs",
     "verify:auth-schema": "node scripts/verify-auth-schema.mjs",
     "migrate:auth": "node scripts/apply-auth-migration.mjs",
-    "configure:supabase-auth": "node scripts/configure-supabase-auth.mjs"
+    "migrate:all": "node scripts/apply-migrations.mjs",
+    "configure:supabase-auth": "node scripts/configure-supabase-auth.mjs",
+    "configure:supabase-smtp": "node scripts/configure-supabase-smtp.mjs",
+    "configure:supabase-disable-smtp": "node scripts/configure-supabase-disable-smtp.mjs",
+    "check:auth-rate-limits": "node scripts/check-auth-rate-limits.mjs",
+    "test:auth-email": "node scripts/test-auth-email.mjs",
+    "configure:resend-dns": "node scripts/configure-resend-dns.mjs",
+    "setup:resend-production": "node scripts/setup-resend-production.mjs",
+    "setup:auth": "node scripts/setup-auth-production.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

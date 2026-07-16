@@ -1,7 +1,7 @@
 import { AtSign, ShieldCheck, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 
-import { signOutAction } from "@/lib/auth/actions";
+import { signOutAction, skipInstagramOnboardingAction } from "@/lib/auth/actions";
 import { requireVerifiedUser } from "@/lib/auth/server";
 
 export const metadata: Metadata = {
@@ -68,8 +68,8 @@ export default async function ConnectInstagramPage() {
           <div className="mt-8 rounded-xl border border-dashed border-white/[0.08] bg-white/[0.02] px-5 py-6 text-center">
             <p className="text-sm font-medium text-white">Instagram connection launches in Phase 2</p>
             <p className="mt-2 text-sm leading-6 text-zinc-500">
-              Your account, email verification, and protected dashboard are ready. The next release
-              adds one-click Meta OAuth from this screen.
+              Your account and email verification are ready. Connect Instagram when Meta OAuth
+              ships, or continue to the dashboard and set it up later.
             </p>
             <button
               type="button"
@@ -78,6 +78,14 @@ export default async function ConnectInstagramPage() {
             >
               Connect Instagram Business
             </button>
+            <form action={skipInstagramOnboardingAction} className="mt-4">
+              <button
+                type="submit"
+                className="text-sm font-medium text-emerald-300 transition-colors hover:text-emerald-200"
+              >
+                Continue to dashboard
+              </button>
+            </form>
           </div>
         </div>
 

@@ -14,11 +14,14 @@ import {
   ensureOnboardingRow,
   getOnboardingState,
   syncEmailVerificationStep,
+  completeInstagramOnboarding,
 } from "@/lib/auth/onboarding";
 import {
+  getMagicLinkRedirectUrl,
   getPasswordResetRedirectUrl,
   getSignupEmailRedirectUrl,
 } from "@/lib/auth/redirects";
+import { mapAuthError } from "@/lib/auth/errors";
 import { createClient } from "@/lib/supabase/server";
 
 export type AuthActionState = {
@@ -29,28 +32,6 @@ export type AuthActionState = {
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);
   return typeof value === "string" ? value.trim() : "";
-}
-
-function mapAuthError(message: string) {
-  const normalized = message.toLowerCase();
-
-  if (normalized.includes("invalid login credentials")) {
-    return "Incorrect email or password.";
-  }
-
-  if (normalized.includes("user already registered")) {
-    return "An account with this email already exists.";
-  }
-
-  if (normalized.includes("password should be at least")) {
-    return "Password must be at least 6 characters.";
-  }
-
-  if (normalized.includes("email not confirmed")) {
-    return "Please verify your email before signing in.";
-  }
-
-  return message;
 }
 
 async function resolvePostAuthRedirect(next?: string | null) {
@@ -238,11 +219,55 @@ export async function resendVerificationAction(
   return { success: "Verification email sent. Check your inbox." };
 }
 
+export async function magicLinkAction(
+  _prevState: AuthActionState,
+  formData: FormData,
+): Promise<AuthActionState> {
+  const email = getString(formData, "email");
+  const next = sanitizeNextPath(getString(formData, "next"));
+
+  if (!email) {
+    return { error: "Please enter your email address." };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: getMagicLinkRedirectUrl(next),
+      shouldCreateUser: false,
+    },
+  });
+
+  if (error) {
+    return { error: mapAuthError(error.message) };
+  }
+
+  return {
+    success: "Magic link sent. Check your inbox and open the link to sign in.",
+  };
+}
+
 export async function signOutAction() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   revalidatePath("/", "layout");
   redirect(AUTH_ROUTES.login);
+}
+
+export async function skipInstagramOnboardingAction() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user || !isEmailVerified(user)) {
+    redirect(AUTH_ROUTES.login);
+  }
+
+  await completeInstagramOnboarding(user.id);
+  revalidatePath("/", "layout");
+  redirect(APP_ROUTES.dashboard);
 }
 
 export async function continueAfterVerificationAction() {

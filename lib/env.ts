@@ -1,3 +1,5 @@
+import { PRODUCTION_APP_URL } from "@/lib/auth/constants";
+
 export function getSupabaseEnv() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -22,6 +24,10 @@ export function getAppUrl() {
 
   if (configured) {
     return configured.replace(/\/$/, "");
+  }
+
+  if (process.env.VERCEL_ENV === "production") {
+    return PRODUCTION_APP_URL;
   }
 
   if (process.env.VERCEL_URL) {

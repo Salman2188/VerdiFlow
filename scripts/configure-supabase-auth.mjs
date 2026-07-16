@@ -1,5 +1,10 @@
+import { loadProjectEnv } from "./load-env.mjs";
+import { getAuthConfigPayload, PRODUCTION_APP_URL } from "./auth-redirects.mjs";
+
+loadProjectEnv();
+
 const projectRef = "afyvzntrdqdjqrtpqksm";
-const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://verdiflowai.vercel.app";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? PRODUCTION_APP_URL;
 const accessToken = process.env.SUPABASE_ACCESS_TOKEN;
 
 if (!accessToken) {
@@ -9,18 +14,28 @@ if (!accessToken) {
   process.exit(1);
 }
 
-const payload = {
-  site_url: appUrl,
-  uri_allow_list: [
-    `${appUrl}/auth/callback`,
-    `${appUrl}/auth/callback/**`,
-    `${appUrl}/reset-password`,
-    `${appUrl}/onboarding/connect-instagram`,
-    "http://localhost:3000/auth/callback",
-    "http://localhost:3000/auth/callback/**",
-    "http://localhost:3000/reset-password",
-  ].join(","),
-};
+const payload = getAuthConfigPayload(appUrl.replace(/\/$/, ""));
+
+const getResponse = await fetch(`https://api.supabase.com/v1/projects/${projectRef}/config/auth`, {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+});
+
+if (getResponse.ok) {
+  const current = await getResponse.json();
+  console.log("Current Supabase auth URLs:");
+  console.log(
+    JSON.stringify(
+      {
+        site_url: current.site_url ?? null,
+        uri_allow_list: current.uri_allow_list ?? null,
+      },
+      null,
+      2,
+    ),
+  );
+}
 
 const response = await fetch(`https://api.supabase.com/v1/projects/${projectRef}/config/auth`, {
   method: "PATCH",
@@ -38,5 +53,16 @@ if (!response.ok) {
   process.exit(1);
 }
 
+const config = JSON.parse(body);
+
 console.log("OK: Updated Supabase auth URLs.");
-console.log(JSON.stringify({ site_url: appUrl }, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      site_url: config.site_url,
+      uri_allow_list: config.uri_allow_list,
+    },
+    null,
+    2,
+  ),
+);

@@ -107,3 +107,26 @@ export async function ensureOnboardingRow(userId: string) {
 
   return data;
 }
+
+export async function completeInstagramOnboarding(userId: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("user_onboarding")
+    .update({
+      current_step: "completed",
+      updated_at: new Date().toISOString(),
+    })
+    .eq("user_id", userId)
+    .select("*")
+    .maybeSingle();
+
+  if (error) {
+    if (isMissingOnboardingTable(error)) {
+      return null;
+    }
+
+    throw error;
+  }
+
+  return data;
+}

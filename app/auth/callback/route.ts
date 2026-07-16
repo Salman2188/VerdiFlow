@@ -7,23 +7,24 @@ import {
   syncEmailVerificationStep,
 } from "@/lib/auth/onboarding";
 import { getPostAuthRedirect, isEmailVerified } from "@/lib/auth/session";
+import { getAppUrl } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const next = sanitizeNextPath(requestUrl.searchParams.get("next"));
-  const origin = requestUrl.origin;
+  const appUrl = getAppUrl();
 
   if (!code) {
-    return NextResponse.redirect(`${origin}/login`);
+    return NextResponse.redirect(`${appUrl}/login`);
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`);
+    return NextResponse.redirect(`${appUrl}/login?error=${encodeURIComponent(error.message)}`);
   }
 
   const {
@@ -31,7 +32,7 @@ export async function GET(request: Request) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.redirect(`${origin}/login`);
+    return NextResponse.redirect(`${appUrl}/login`);
   }
 
   await ensureOnboardingRow(user.id);
@@ -49,5 +50,5 @@ export async function GET(request: Request) {
     next,
   });
 
-  return NextResponse.redirect(`${origin}${destination}`);
+  return NextResponse.redirect(`${appUrl}${destination}`);
 }
