@@ -5,6 +5,7 @@ export { getAnalytics } from "./analytics.service";
 export {
   getDashboardInsights,
   getDashboardKpis,
+  getDashboardPageData,
   getDashboardPipelinePreview,
 } from "./dashboard.service";
 export { getSettings, updateSettings } from "./settings.service";

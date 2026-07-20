@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 import { getSupabaseEnv } from "@/lib/env";
@@ -14,15 +15,41 @@ export async function createClient() {
         return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) => {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          try {
             cookieStore.set(name, value, options);
-          });
-        } catch {
-          // Called from a Server Component — safe to ignore when middleware
-          // refreshes the session on the next request.
-        }
+          } catch {
+            // Server Components cannot mutate cookies. Middleware refreshes sessions
+            // on navigation; Server Actions and Route Handlers can set cookies above.
+          }
+        });
       },
     },
   });
+}
+
+type ActionClientResult = {
+  supabase: SupabaseClient<Database>;
+  user: User | null;
+};
+
+/**
+ * Reads the authenticated user for Server Actions, falling back to the session
+ * cookie when JWT validation is unavailable in the action context.
+ */
+export async function createActionClient(): Promise<ActionClientResult> {
+  const supabase = await createClient();
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return {
+    supabase,
+    user: user ?? session?.user ?? null,
+  };
 }

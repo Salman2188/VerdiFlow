@@ -17,5 +17,6 @@ export const config = {
     "/verify-email",
     "/reset-password",
     "/auth/:path*",
+    "/api/onboarding/:path*",
   ],
 };

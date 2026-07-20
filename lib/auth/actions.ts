@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import {
   AUTH_ROUTES,
   APP_ROUTES,
-  ONBOARDING_ROUTES,
   sanitizeNextPath,
 } from "@/lib/auth/routes";
 import { getPostAuthRedirect, isEmailVerified } from "@/lib/auth/session";
@@ -14,7 +13,6 @@ import {
   ensureOnboardingRow,
   getOnboardingState,
   syncEmailVerificationStep,
-  completeInstagramOnboarding,
 } from "@/lib/auth/onboarding";
 import {
   getMagicLinkRedirectUrl,
@@ -22,7 +20,8 @@ import {
   getSignupEmailRedirectUrl,
 } from "@/lib/auth/redirects";
 import { mapAuthError } from "@/lib/auth/errors";
-import { createClient } from "@/lib/supabase/server";
+import { createActionClient, createClient } from "@/lib/supabase/server";
+import { skipOnboardingForUser } from "@/lib/auth/skip-onboarding";
 
 export type AuthActionState = {
   error?: string;
@@ -35,10 +34,7 @@ function getString(formData: FormData, key: string) {
 }
 
 async function resolvePostAuthRedirect(next?: string | null) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await createActionClient();
 
   if (!user) {
     redirect(AUTH_ROUTES.login);
@@ -119,20 +115,31 @@ export async function signInAction(
     return { error: "Unable to sign in. Please try again." };
   }
 
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const sessionUser = data.user ?? session?.user;
+
+  if (!sessionUser) {
+    return { error: "Unable to establish a session. Please try again." };
+  }
+
   if (!isEmailVerified(data.user)) {
     redirect(AUTH_ROUTES.verifyEmail);
   }
 
-  if (data.user.email_confirmed_at) {
-    await syncEmailVerificationStep(data.user.id, data.user.email_confirmed_at);
+  if (sessionUser.email_confirmed_at) {
+    await syncEmailVerificationStep(sessionUser.id, sessionUser.email_confirmed_at);
   }
 
   const onboarding =
-    (await getOnboardingState(data.user.id)) ?? (await ensureOnboardingRow(data.user.id));
+    (await getOnboardingState(sessionUser.id)) ??
+    (await ensureOnboardingRow(sessionUser.id));
 
   redirect(
     getPostAuthRedirect({
-      user: data.user,
+      user: sessionUser,
       onboardingStep: onboarding?.current_step ?? "connect_instagram",
       next,
     }),
@@ -256,17 +263,13 @@ export async function signOutAction() {
 }
 
 export async function skipInstagramOnboardingAction() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user } = await createActionClient();
 
   if (!user || !isEmailVerified(user)) {
     redirect(AUTH_ROUTES.login);
   }
 
-  await completeInstagramOnboarding(user.id);
-  revalidatePath("/", "layout");
+  await skipOnboardingForUser(supabase, user.id);
   redirect(APP_ROUTES.dashboard);
 }
 

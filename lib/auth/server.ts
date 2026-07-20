@@ -14,37 +14,18 @@ import {
   getOnboardingState,
   syncEmailVerificationStep,
 } from "@/lib/auth/onboarding";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthUser, resolveAuthUser } from "@/lib/auth/user";
 
 export async function getCurrentUser(): Promise<User> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (error) {
-    throw error;
-  }
-
-  if (!user) {
-    redirect(AUTH_ROUTES.login);
-  }
-
-  return user;
+  return requireAuthUser();
 }
 
 export async function getOptionalUser(): Promise<User | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return user;
+  return resolveAuthUser();
 }
 
 export async function requireVerifiedUser(): Promise<User> {
-  const user = await getCurrentUser();
+  const user = await requireAuthUser();
 
   if (!isEmailVerified(user)) {
     redirect(AUTH_ROUTES.verifyEmail);
@@ -67,7 +48,7 @@ export async function requireVerifiedUserForPath(pathname: string): Promise<User
   const onboarding =
     (await getOnboardingState(user.id)) ?? (await ensureOnboardingRow(user.id));
 
-  const currentStep = onboarding?.current_step ?? "connect_instagram";
+  const currentStep = onboarding?.current_step;
 
   if (currentStep === "connect_instagram" && pathname.startsWith("/dashboard")) {
     redirect(ONBOARDING_ROUTES.connectInstagram);

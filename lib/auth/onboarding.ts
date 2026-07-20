@@ -1,7 +1,10 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import { createClient } from "@/lib/supabase/server";
 import type { OnboardingStep, UserOnboardingRow } from "@/types/database";
+import type { Database } from "@/types/database";
 
 function isMissingOnboardingTable(error: { code?: string; message?: string }) {
   return error.code === "PGRST205" || Boolean(error.message?.includes("does not exist"));
@@ -108,12 +111,16 @@ export async function ensureOnboardingRow(userId: string) {
   return data;
 }
 
-export async function completeInstagramOnboarding(userId: string) {
-  const supabase = await createClient();
+export async function completeInstagramOnboarding(
+  userId: string,
+  supabaseClient?: SupabaseClient<Database>,
+) {
+  const supabase = supabaseClient ?? (await createClient());
   const { data, error } = await supabase
     .from("user_onboarding")
     .update({
       current_step: "completed",
+      onboarding_completed_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })
     .eq("user_id", userId)

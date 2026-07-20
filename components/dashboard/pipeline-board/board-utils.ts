@@ -40,3 +40,23 @@ export function computePipelineBoardStats(board: KanbanBoard): PipelineBoardStat
     sold: board.columns.find((c) => c.id === "solgt")?.leads.length ?? 0,
   };
 }
+
+export function filterBoard(board: KanbanBoard, query: string): KanbanBoard {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return board;
+
+  return {
+    columns: board.columns.map((column) => ({
+      ...column,
+      leads: column.leads.filter(
+        (lead) =>
+          lead.customerName.toLowerCase().includes(normalized) ||
+          lead.property.toLowerCase().includes(normalized),
+      ),
+    })),
+  };
+}
+
+export function countVisibleLeads(board: KanbanBoard): number {
+  return board.columns.reduce((sum, column) => sum + column.leads.length, 0);
+}

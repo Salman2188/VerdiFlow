@@ -1,7 +1,14 @@
+import {
+  pipelineBoardCanvas,
+  pipelineBoardShell,
+  pipelineColumn,
+  pipelineWorkspace,
+} from "./pipeline-board-styles";
+
 function SkeletonBar({ className }: { className?: string }) {
   return (
     <div
-      className={`animate-pulse rounded-lg bg-white/[0.06] ${className ?? ""}`}
+      className={`animate-pulse rounded-md bg-zinc-800/80 ${className ?? ""}`}
       aria-hidden="true"
     />
   );
@@ -9,24 +16,27 @@ function SkeletonBar({ className }: { className?: string }) {
 
 export function PipelineBoardLoadingState() {
   return (
-    <div className="space-y-6 lg:space-y-8" role="status" aria-label="Laster pipeline">
-      <SkeletonBar className="h-36 w-full rounded-2xl" />
+    <div className={pipelineWorkspace} role="status" aria-label="Laster pipeline">
+      <div className="space-y-3">
+        <SkeletonBar className="h-8 w-32" />
+        <SkeletonBar className="h-4 w-64" />
+      </div>
 
-      <div className="rounded-2xl border border-white/[0.05] bg-white/[0.02] p-5 backdrop-blur-2xl lg:p-6">
-        <div className="-mx-2 flex gap-4 overflow-hidden px-2">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="w-[17.5rem] shrink-0">
-              <SkeletonBar className="mb-4 h-5 w-32" />
-              <div className="space-y-3 rounded-2xl border border-white/[0.04] p-3">
-                <SkeletonBar className="h-32 w-full rounded-xl" />
-                <SkeletonBar className="h-32 w-full rounded-xl" />
+      <div className={pipelineBoardShell}>
+        <div className={pipelineBoardCanvas}>
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className={pipelineColumn}>
+              <SkeletonBar className="mb-2 h-5 w-28" />
+              <div className="flex flex-1 flex-col gap-2 rounded-lg border border-zinc-800/80 bg-zinc-950/40 p-2">
+                <SkeletonBar className="h-24 w-full" />
+                <SkeletonBar className="h-24 w-full" />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <span className="sr-only">Laster pipeline...</span>
+      <span className="sr-only">Laster pipeline…</span>
     </div>
   );
 }

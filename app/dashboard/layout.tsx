@@ -4,8 +4,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-[#070b0a] text-zinc-50 antialiased">
-      {children}
-    </div>
+    <div className="min-h-screen bg-zinc-950 font-sans text-zinc-50 antialiased">{children}</div>
   );
 }

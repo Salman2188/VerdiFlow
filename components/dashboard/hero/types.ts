@@ -12,6 +12,7 @@ export type BriefInsight = {
 };
 
 export type DashboardHeroContent = {
+  greeting: string;
   agentName: string;
   aiSummary: string;
   focusTasks: FocusTask[];

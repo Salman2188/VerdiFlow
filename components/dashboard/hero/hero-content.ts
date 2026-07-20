@@ -1,6 +1,7 @@
 import type { DashboardHeroContent } from "./types";
 
 export const DEFAULT_HERO_CONTENT: DashboardHeroContent = {
+  greeting: "God morgen",
   agentName: "Alex",
   aiSummary:
     "Du har 3 varme leads og 2 visninger i dag. AI har forberedt personlige oppfølginger for Walsh og Park, og prioritert oppgavene som gir størst verdi akkurat nå.",

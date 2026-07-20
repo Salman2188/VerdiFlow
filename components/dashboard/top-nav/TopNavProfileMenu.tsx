@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ChevronDown, LogOut, Settings, User } from "lucide-react";
+import { ChevronDown, LogOut, Settings } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 
+import { dashboardFocusRing } from "@/components/dashboard/dashboard-styles";
 import { signOutAction } from "@/lib/auth/actions";
 
 import type { TopNavUser } from "./types";
@@ -11,12 +12,6 @@ import type { TopNavUser } from "./types";
 type TopNavProfileMenuProps = {
   user: TopNavUser;
 };
-
-const MENU_ITEMS = [
-  { label: "Profile", icon: User },
-  { label: "Settings", icon: Settings },
-  { label: "Sign out", icon: LogOut },
-] as const;
 
 export function TopNavProfileMenu({ user }: TopNavProfileMenuProps) {
   const [open, setOpen] = useState(false);
@@ -46,74 +41,78 @@ export function TopNavProfileMenu({ user }: TopNavProfileMenuProps) {
   }, [open]);
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative ml-auto">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="group flex items-center gap-2 rounded-xl border border-white/[0.05] bg-white/[0.02] py-1 pl-1 pr-2 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-white/[0.08] hover:bg-white/[0.05] active:scale-[0.98]"
+        className={`flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-1 pl-1 pr-2 transition-colors hover:border-zinc-700 hover:bg-zinc-900 ${dashboardFocusRing}`}
       >
         {user.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={user.avatarUrl}
-            alt={user.name}
-            className="h-7 w-7 rounded-lg object-cover shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+            alt=""
+            className="h-7 w-7 rounded-md object-cover ring-1 ring-zinc-700"
           />
         ) : (
-          <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-emerald-400/50 via-teal-500/40 to-emerald-700/50 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]" />
+          <div
+            className="h-7 w-7 rounded-md bg-zinc-800 ring-1 ring-zinc-700"
+            aria-hidden="true"
+          />
         )}
-        <span className="hidden max-w-[7rem] truncate text-[12px] font-medium tracking-[-0.01em] text-zinc-300 md:block">
+        <span className="hidden max-w-[7rem] truncate text-xs font-medium text-zinc-300 md:block">
           {user.name}
         </span>
         <ChevronDown
-          className={`h-3.5 w-3.5 text-zinc-500 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${open ? "rotate-180" : ""}`}
           strokeWidth={1.75}
+          aria-hidden="true"
         />
       </button>
 
-      {open && (
+      {open ? (
         <div
           role="menu"
-          className="absolute top-[calc(100%+8px)] right-0 z-50 w-56 overflow-hidden rounded-xl border border-white/[0.06] bg-[#0c100e]/95 p-1.5 shadow-[0_16px_48px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-2xl"
+          className="absolute top-[calc(100%+8px)] right-0 z-50 w-52 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950 p-1 shadow-xl"
         >
-          <div className="border-b border-white/[0.05] px-3 py-2.5">
-            <p className="truncate text-[13px] font-semibold tracking-[-0.01em] text-white">
-              {user.name}
-            </p>
-            <p className="truncate text-[11px] text-zinc-500">{user.email}</p>
+          <div className="border-b border-zinc-800 px-3 py-2.5">
+            <p className="truncate text-sm font-medium text-zinc-100">{user.name}</p>
+            <p className="truncate text-xs text-zinc-500">{user.email}</p>
           </div>
           <div className="py-1">
-            {MENU_ITEMS.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                role="menuitem"
-                disabled={isPending}
-                onClick={() => {
-                  setOpen(false);
-
-                  if (item.label === "Sign out") {
-                    startTransition(async () => {
-                      await signOutAction();
-                    });
-                    return;
-                  }
-
-                  if (item.label === "Settings") {
-                    router.push("/dashboard/settings");
-                  }
-                }}
-                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-zinc-400 transition-colors duration-300 hover:bg-white/[0.04] hover:text-zinc-200 disabled:opacity-60"
-              >
-                <item.icon className="h-4 w-4" strokeWidth={1.75} />
-                {item.label === "Sign out" && isPending ? "Signing out..." : item.label}
-              </button>
-            ))}
+            <button
+              type="button"
+              role="menuitem"
+              disabled={isPending}
+              onClick={() => {
+                setOpen(false);
+                router.push("/dashboard/settings");
+              }}
+              className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100 disabled:opacity-60 ${dashboardFocusRing}`}
+            >
+              <Settings className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+              Innstillinger
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              disabled={isPending}
+              onClick={() => {
+                setOpen(false);
+                startTransition(async () => {
+                  await signOutAction();
+                });
+              }}
+              className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100 disabled:opacity-60 ${dashboardFocusRing}`}
+            >
+              <LogOut className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+              {isPending ? "Logger ut…" : "Logg ut"}
+            </button>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

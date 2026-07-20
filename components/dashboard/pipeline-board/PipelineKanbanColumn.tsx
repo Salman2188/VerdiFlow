@@ -1,24 +1,21 @@
 "use client";
 
+import {
+  pipelineColumn,
+  pipelineColumnBody,
+  pipelineColumnBodyActive,
+  pipelineColumnHeader,
+} from "./pipeline-board-styles";
 import { PipelineKanbanCard } from "./PipelineKanbanCard";
 import type { KanbanColumn, KanbanColumnId } from "./types";
 
-const COLUMN_ACCENT: Record<KanbanColumnId, string> = {
-  "nye-leads": "border-white/[0.04] hover:border-sky-500/15",
-  kontaktet: "border-white/[0.04] hover:border-violet-500/15",
-  "visning-booket": "border-white/[0.04] hover:border-amber-500/15",
-  "bud-sendt": "border-white/[0.04] hover:border-rose-500/15",
-  forhandling: "border-white/[0.04] hover:border-emerald-500/20",
-  solgt: "border-white/[0.04] hover:border-emerald-500/25",
-};
-
-const DROP_HIGHLIGHT: Record<KanbanColumnId, string> = {
-  "nye-leads": "border-sky-500/30 bg-sky-500/[0.04]",
-  kontaktet: "border-violet-500/30 bg-violet-500/[0.04]",
-  "visning-booket": "border-amber-500/30 bg-amber-500/[0.04]",
-  "bud-sendt": "border-rose-500/30 bg-rose-500/[0.04]",
-  forhandling: "border-emerald-500/35 bg-emerald-500/[0.06]",
-  solgt: "border-emerald-500/40 bg-emerald-500/[0.08]",
+const STAGE_DOT: Record<KanbanColumnId, string> = {
+  "nye-leads": "bg-zinc-500",
+  kontaktet: "bg-sky-400",
+  "visning-booket": "bg-amber-400",
+  "bud-sendt": "bg-violet-400",
+  forhandling: "bg-emerald-400",
+  solgt: "bg-emerald-500",
 };
 
 type PipelineKanbanColumnProps = {
@@ -45,17 +42,16 @@ export function PipelineKanbanColumn({
   const isDropTarget = dropTargetId === column.id && draggedLeadId !== null;
 
   return (
-    <div className="flex w-[17.5rem] shrink-0 flex-col lg:w-auto lg:min-w-[17.5rem] lg:flex-1">
-      <div className="mb-4 flex items-center justify-between px-1">
-        <div className="flex items-center gap-2">
-          <span className="text-sm" aria-hidden="true">
-            {column.emoji}
-          </span>
-          <h3 className="text-[13px] font-semibold tracking-[-0.01em] text-white">
-            {column.label}
-          </h3>
+    <div className={pipelineColumn}>
+      <div className={pipelineColumnHeader}>
+        <div className="flex min-w-0 items-center gap-2">
+          <span
+            className={`h-2 w-2 shrink-0 rounded-full ${STAGE_DOT[column.id]}`}
+            aria-hidden="true"
+          />
+          <h2 className="truncate text-sm font-medium text-zinc-200">{column.label}</h2>
         </div>
-        <span className="rounded-md border border-white/[0.05] bg-white/[0.03] px-2 py-0.5 text-[11px] font-medium tabular-nums text-zinc-500">
+        <span className="shrink-0 text-xs font-medium tabular-nums text-zinc-500">
           {column.leads.length}
         </span>
       </div>
@@ -71,23 +67,15 @@ export function PipelineKanbanColumn({
           event.preventDefault();
           onDrop(column.id);
         }}
-        className={`flex min-h-[12rem] flex-col gap-3 rounded-2xl border p-3 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${COLUMN_ACCENT[column.id]} ${
-          isDropTarget ? DROP_HIGHLIGHT[column.id] : "bg-white/[0.01]"
-        }`}
+        className={`${pipelineColumnBody} ${isDropTarget ? pipelineColumnBodyActive : ""}`}
       >
-        {column.leads.length === 0 && (
-          <div
-            className={`flex flex-1 items-center justify-center rounded-xl border border-dashed px-4 py-8 text-center transition-all duration-500 ${
-              isDropTarget
-                ? "border-emerald-500/30 text-emerald-400/60"
-                : "border-white/[0.04] text-zinc-600"
-            }`}
-          >
-            <p className="text-[11px]">
-              {isDropTarget ? "Slipp lead her" : "Ingen leads i denne fasen"}
+        {column.leads.length === 0 ? (
+          <div className="flex flex-1 items-center justify-center rounded-md border border-dashed border-zinc-800 px-3 py-8 text-center">
+            <p className="text-xs text-zinc-600">
+              {isDropTarget ? "Slipp lead her" : "Ingen leads"}
             </p>
           </div>
-        )}
+        ) : null}
 
         {column.leads.map((lead) => (
           <PipelineKanbanCard

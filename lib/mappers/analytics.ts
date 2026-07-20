@@ -30,10 +30,10 @@ const STAGE_META: Record<
   LeadRow["stage"],
   { label: string; emoji: string }
 > = {
-  hot: { label: "Hot", emoji: "🔥" },
-  warm: { label: "Warm", emoji: "🟠" },
-  active: { label: "Active", emoji: "🟢" },
-  new: { label: "New", emoji: "⚪" },
+  hot: { label: "Varme", emoji: "🔥" },
+  warm: { label: "Varm", emoji: "🟠" },
+  active: { label: "Aktive", emoji: "🟢" },
+  new: { label: "Nye", emoji: "⚪" },
 };
 
 function buildSparkline(value: number, points = 7): number[] {

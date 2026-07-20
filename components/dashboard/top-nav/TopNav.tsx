@@ -1,9 +1,11 @@
-import { DEFAULT_SIDEBAR_USER } from "@/components/dashboard/sidebar";
+"use client";
 
-import { TopNavAiStatus } from "./TopNavAiStatus";
-import { TopNavCalendar, TopNavNotifications } from "./TopNavActions";
+import { Menu } from "lucide-react";
+
+import { DEFAULT_SIDEBAR_USER } from "@/components/dashboard/sidebar";
+import { dashboardFocusRing } from "@/components/dashboard/dashboard-styles";
+
 import { TopNavProfileMenu } from "./TopNavProfileMenu";
-import { TopNavSearch } from "./TopNavSearch";
 import type { TopNavUser } from "./types";
 
 const DEFAULT_TOP_NAV_USER: TopNavUser = {
@@ -14,30 +16,27 @@ const DEFAULT_TOP_NAV_USER: TopNavUser = {
 
 type TopNavProps = {
   user?: TopNavUser;
+  onMenuClick?: () => void;
 };
 
-export function TopNav({ user = DEFAULT_TOP_NAV_USER }: TopNavProps) {
+export function TopNav({ user = DEFAULT_TOP_NAV_USER, onMenuClick }: TopNavProps) {
   return (
-    <header className="sticky top-0 z-40 w-full">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-emerald-500/[0.03] to-transparent"
-      />
-
-      <div className="relative flex h-16 items-center justify-between gap-4 border-b border-white/[0.06] bg-[#0a0e0c]/75 px-6 shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-2xl backdrop-saturate-150 lg:px-8">
-        <TopNavSearch />
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <TopNavAiStatus />
-          <TopNavCalendar />
-          <TopNavNotifications />
-          <div className="mx-1 hidden h-5 w-px bg-white/[0.06] sm:block" />
-          <TopNavProfileMenu user={user} />
+    <header className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
+      <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
+          {onMenuClick ? (
+            <button
+              type="button"
+              onClick={onMenuClick}
+              aria-label="Åpne navigasjon"
+              className={`flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-800 text-zinc-400 transition-colors hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 lg:hidden ${dashboardFocusRing}`}
+            >
+              <Menu className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+            </button>
+          ) : null}
         </div>
+
+        <TopNavProfileMenu user={user} />
       </div>
     </header>
   );

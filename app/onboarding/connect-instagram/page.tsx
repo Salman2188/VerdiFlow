@@ -2,7 +2,7 @@ import { AtSign, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-import { signOutAction, skipInstagramOnboardingAction } from "@/lib/auth/actions";
+import { signOutAction } from "@/lib/auth/actions";
 import { requireVerifiedUser } from "@/lib/auth/server";
 import { getPrimaryWorkspace } from "@/lib/auth/workspace";
 import { hasMetaEnv } from "@/lib/integrations/meta/config";
@@ -93,7 +93,7 @@ export default async function ConnectInstagramPage({ searchParams }: ConnectInst
               <p className="mt-2 text-sm leading-6 text-zinc-400">
                 Instagram is linked to {existingConnection.facebook_page_name ?? "your Facebook Page"}.
               </p>
-              <form action={skipInstagramOnboardingAction} className="mt-4">
+              <form action="/api/onboarding/skip" method="post" className="mt-4">
                 <button
                   type="submit"
                   className="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-emerald-950 transition-all hover:bg-emerald-400"
@@ -126,7 +126,7 @@ export default async function ConnectInstagramPage({ searchParams }: ConnectInst
                   Connect Instagram Business
                 </button>
               )}
-              <form action={skipInstagramOnboardingAction} className="mt-4">
+              <form action="/api/onboarding/skip" method="post" className="mt-4">
                 <button
                   type="submit"
                   className="text-sm font-medium text-emerald-300 transition-colors hover:text-emerald-200"

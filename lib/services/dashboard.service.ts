@@ -38,3 +38,13 @@ export async function getDashboardInsights(): Promise<AiInsight[]> {
   const leads = await fetchDashboardSourceData();
   return buildDashboardInsights(leads);
 }
+
+export async function getDashboardPageData() {
+  const leads = await fetchDashboardSourceData();
+
+  return {
+    metrics: buildDashboardKpis(leads),
+    stages: buildDashboardPipelinePreview(leads),
+    insights: buildDashboardInsights(leads),
+  };
+}
