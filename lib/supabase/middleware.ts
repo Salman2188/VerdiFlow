@@ -14,7 +14,23 @@ import { hasSupabaseEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
 import type { OnboardingStep } from "@/types/database";
 
-function buildLoginRedirect(request: NextRequest) {
+function applySupabaseCookies(source: NextResponse, target: NextResponse) {
+  source.cookies.getAll().forEach(({ name, value, ...options }) => {
+    target.cookies.set(name, value, options);
+  });
+}
+
+function redirectWithSupabaseCookies(
+  supabaseResponse: NextResponse,
+  request: NextRequest,
+  destination: string | URL,
+) {
+  const redirectResponse = NextResponse.redirect(new URL(destination, request.url));
+  applySupabaseCookies(supabaseResponse, redirectResponse);
+  return redirectResponse;
+}
+
+function buildLoginRedirect(request: NextRequest, supabaseResponse: NextResponse) {
   const redirectUrl = request.nextUrl.clone();
   const next = `${request.nextUrl.pathname}${request.nextUrl.search}`;
   redirectUrl.pathname = AUTH_ROUTES.login;
@@ -24,7 +40,7 @@ function buildLoginRedirect(request: NextRequest) {
     redirectUrl.searchParams.set("next", next);
   }
 
-  return NextResponse.redirect(redirectUrl);
+  return redirectWithSupabaseCookies(supabaseResponse, request, redirectUrl);
 }
 
 async function getOnboardingStep(
@@ -88,16 +104,16 @@ export async function updateSession(request: NextRequest) {
   const isCallbackRoute = pathname.startsWith("/auth/");
 
   if (!user && isProtected) {
-    return buildLoginRedirect(request);
+    return buildLoginRedirect(request, supabaseResponse);
   }
 
   if (!user && isVerifyEmailRoute) {
     const hasEmailHint = request.nextUrl.searchParams.has("email");
     if (!hasEmailHint) {
-      return buildLoginRedirect(request);
+      return buildLoginRedirect(request, supabaseResponse);
     }
   } else if (!user && isResetPasswordRoute) {
-    return buildLoginRedirect(request);
+    return buildLoginRedirect(request, supabaseResponse);
   }
 
   if (user && isAuthRoute) {
@@ -107,7 +123,7 @@ export async function updateSession(request: NextRequest) {
       onboardingStep,
       next: request.nextUrl.searchParams.get("next"),
     });
-    return NextResponse.redirect(new URL(destination, request.url));
+    return redirectWithSupabaseCookies(supabaseResponse, request, destination);
   }
 
   if (user && !isEmailVerified(user) && !isVerifyEmailRoute && !isCallbackRoute) {
@@ -115,14 +131,14 @@ export async function updateSession(request: NextRequest) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = AUTH_ROUTES.verifyEmail;
       redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      return redirectWithSupabaseCookies(supabaseResponse, request, redirectUrl);
     }
   }
 
   if (user && isEmailVerified(user) && isVerifyEmailRoute) {
     const onboardingStep = await getOnboardingStep(supabase, user.id);
     const destination = getPostAuthRedirect({ user, onboardingStep });
-    return NextResponse.redirect(new URL(destination, request.url));
+    return redirectWithSupabaseCookies(supabaseResponse, request, destination);
   }
 
   if (user && isEmailVerified(user) && isProtected && pathname.startsWith("/dashboard")) {
@@ -132,7 +148,7 @@ export async function updateSession(request: NextRequest) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = ONBOARDING_ROUTES.connectInstagram;
       redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      return redirectWithSupabaseCookies(supabaseResponse, request, redirectUrl);
     }
   }
 
@@ -141,7 +157,7 @@ export async function updateSession(request: NextRequest) {
 
     if (onboardingStep === "completed") {
       const next = sanitizeNextPath(request.nextUrl.searchParams.get("next"));
-      return NextResponse.redirect(new URL(next, request.url));
+      return redirectWithSupabaseCookies(supabaseResponse, request, next);
     }
   }
 

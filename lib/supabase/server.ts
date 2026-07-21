@@ -1,11 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 import { getSupabaseEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
 
-export async function createClient() {
+export const createClient = cache(async () => {
   const cookieStore = await cookies();
   const { url, anonKey } = getSupabaseEnv();
 
@@ -26,7 +27,7 @@ export async function createClient() {
       },
     },
   });
-}
+});
 
 type ActionClientResult = {
   supabase: SupabaseClient<Database>;
@@ -44,12 +45,19 @@ export async function createActionClient(): Promise<ActionClientResult> {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (session?.user) {
+    return {
+      supabase,
+      user: session.user,
+    };
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   return {
     supabase,
-    user: user ?? session?.user ?? null,
+    user: user ?? null,
   };
 }

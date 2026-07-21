@@ -1,5 +1,6 @@
 import type { AuthError, User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 import { AUTH_ROUTES } from "@/lib/auth/routes";
 import { createClient } from "@/lib/supabase/server";
@@ -17,14 +18,18 @@ type ResolveAuthUserOptions = {
   redirectTo?: string;
 };
 
-export async function resolveAuthUser(
+export const resolveAuthUser = cache(async (
   _options: ResolveAuthUserOptions = {},
-): Promise<User | null> {
+): Promise<User | null> => {
   const supabase = await createClient();
 
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
+  if (session?.user) {
+    return session.user;
+  }
 
   const {
     data: { user },
@@ -33,10 +38,6 @@ export async function resolveAuthUser(
 
   if (user) {
     return user;
-  }
-
-  if (session?.user) {
-    return session.user;
   }
 
   if (error) {
@@ -48,7 +49,7 @@ export async function resolveAuthUser(
   }
 
   return null;
-}
+});
 
 export async function requireAuthUser(options: ResolveAuthUserOptions = {}): Promise<User> {
   const user = await resolveAuthUser(options);
