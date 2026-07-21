@@ -13,7 +13,7 @@ export default async function HomePage() {
   const user = await getOptionalUser();
 
   if (!user) {
-    redirect(APP_ROUTES.landing);
+    redirect(APP_ROUTES.dashboard);
   }
 
   if (!isEmailVerified(user)) {
