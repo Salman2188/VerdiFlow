@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import { dashboardFocusRing, dashboardInteractiveCard } from "@/components/dashboard/dashboard-styles";
+
 import { AiSection } from "./AiSection";
 import type { QuickAction, QuickActionId } from "./types";
 
@@ -44,21 +46,15 @@ export function AiQuickActions({ actions, onAction, disabled }: AiQuickActionsPr
               type="button"
               disabled={disabled}
               onClick={() => onAction(action.id)}
-              className="group relative overflow-hidden rounded-2xl border border-white/[0.05] bg-white/[0.02] p-5 text-left shadow-[0_2px_16px_rgba(0,0,0,0.16)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-emerald-500/15 hover:bg-white/[0.04] hover:shadow-[0_8px_32px_rgba(0,0,0,0.24),0_0_20px_rgba(16,185,129,0.05)] disabled:opacity-50"
+              className={`group ${dashboardInteractiveCard} p-5 text-left disabled:opacity-50 ${dashboardFocusRing}`}
             >
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
-              />
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-500/10 bg-emerald-500/[0.06] transition-colors duration-500 group-hover:border-emerald-500/20 group-hover:bg-emerald-500/[0.1]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-500/10 bg-emerald-500/[0.06] transition-colors duration-150 group-hover:border-emerald-500/20 group-hover:bg-emerald-500/[0.1]">
                 <Icon className="h-5 w-5 text-emerald-400/80" strokeWidth={1.75} />
               </div>
-              <p className="mt-4 text-[14px] font-semibold tracking-[-0.02em] text-white">
+              <p className="mt-4 text-sm font-semibold tracking-[-0.02em] text-zinc-50">
                 {action.label}
               </p>
-              <p className="mt-1.5 text-[12px] leading-[1.6] text-zinc-500">
-                {action.description}
-              </p>
+              <p className="mt-1.5 text-xs leading-5 text-zinc-500">{action.description}</p>
             </button>
           );
         })}

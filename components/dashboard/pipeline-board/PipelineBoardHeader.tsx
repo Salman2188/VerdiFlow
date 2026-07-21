@@ -2,11 +2,9 @@
 
 import { Search } from "lucide-react";
 
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import {
-  pipelineHeader,
   pipelineSearch,
-  pipelineStat,
-  pipelineStatLabel,
 } from "./pipeline-board-styles";
 import type { PipelineBoardStats } from "./types";
 
@@ -26,37 +24,20 @@ export function PipelineBoardHeader({
   isFiltering,
 }: PipelineBoardHeaderProps) {
   return (
-    <header className={pipelineHeader}>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-[-0.03em] text-zinc-50 sm:text-2xl">
-            Pipeline
-          </h1>
-          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-            <span className={pipelineStatLabel}>
-              <span className={pipelineStat}>{stats.total}</span> leads
-            </span>
-            <span className="text-zinc-700" aria-hidden="true">
-              ·
-            </span>
-            <span className={pipelineStatLabel}>
-              <span className={pipelineStat}>{stats.inNegotiation}</span> i forhandling
-            </span>
-            <span className="text-zinc-700" aria-hidden="true">
-              ·
-            </span>
-            <span className={pipelineStatLabel}>
-              <span className={pipelineStat}>{stats.highPriority}</span> høy prioritet
-            </span>
-            <span className="text-zinc-700" aria-hidden="true">
-              ·
-            </span>
-            <span className={pipelineStatLabel}>
-              <span className={pipelineStat}>{stats.sold}</span> solgt
-            </span>
-          </p>
-        </div>
+    <div className="space-y-4">
+      <DashboardPageHeader
+        label="Arbeidsområde"
+        title="Pipeline"
+        description="Se hele salgsprosessen og flytt deals fremover."
+        stats={[
+          { label: "Leads", value: stats.total },
+          { label: "I forhandling", value: stats.inNegotiation },
+          { label: "Høy prioritet", value: stats.highPriority, accent: "text-emerald-400/90" },
+          { label: "Solgt", value: stats.sold },
+        ]}
+      />
 
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full sm:max-w-xs">
           <Search
             className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500"
@@ -72,13 +53,12 @@ export function PipelineBoardHeader({
             className={`${pipelineSearch} pl-9`}
           />
         </div>
+        {isFiltering ? (
+          <p className="text-xs text-zinc-500">
+            Viser {filteredCount} av {stats.total} leads
+          </p>
+        ) : null}
       </div>
-
-      {isFiltering ? (
-        <p className="mt-3 text-xs text-zinc-500">
-          Viser {filteredCount} av {stats.total} leads
-        </p>
-      ) : null}
-    </header>
+    </div>
   );
 }

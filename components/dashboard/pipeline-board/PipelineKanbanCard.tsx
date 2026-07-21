@@ -75,7 +75,9 @@ export function PipelineKanbanCard({
       </div>
 
       {lead.aiRecommendation ? (
-        <p className="mt-2 line-clamp-2 text-xs leading-5 text-zinc-400">{lead.aiRecommendation}</p>
+        <p className="mt-2 line-clamp-2 rounded-md border border-emerald-500/10 bg-emerald-500/[0.03] px-2 py-1.5 text-xs leading-5 text-zinc-400">
+          {lead.aiRecommendation}
+        </p>
       ) : null}
     </article>
   );

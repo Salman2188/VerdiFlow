@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+
+import { dashboardPage } from "@/components/dashboard/dashboard-styles";
 
 import { AiAlerts } from "./AiAlerts";
 import { AiAssistantHeader } from "./AiAssistantHeader";
@@ -11,7 +13,7 @@ import { AiGeneratedMessages } from "./AiGeneratedMessages";
 import { AiQuickActions } from "./AiQuickActions";
 import { AiRecommendations } from "./AiRecommendations";
 import { useAiAssistant } from "./use-ai-assistant";
-import type { ChatMessage, QuickActionId } from "./types";
+import type { AiAssistantData, ChatMessage, QuickActionId } from "./types";
 import { QUICK_ACTION_RESPONSES } from "./types";
 
 const MOCK_CHAT_RESPONSES = [
@@ -25,22 +27,15 @@ function getTimestamp() {
   return `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
 }
 
-export function AiAssistantWorkspace() {
-  const { data, isLoading } = useAiAssistant();
-  const [ready, setReady] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+type AiAssistantLoadedProps = {
+  data: AiAssistantData;
+};
+
+function AiAssistantLoaded({ data }: AiAssistantLoadedProps) {
+  const [messages, setMessages] = useState<ChatMessage[]>(data.chatMessages);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [responseIndex, setResponseIndex] = useState(0);
-
-  useEffect(() => {
-    if (!isLoading && data && data.chatMessages.length > 0) {
-      setMessages(data.chatMessages);
-      const frame = requestAnimationFrame(() => setReady(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setReady(false);
-  }, [isLoading, data]);
 
   const addAssistantMessage = useCallback((content: string) => {
     setIsTyping(true);
@@ -70,7 +65,6 @@ export function AiAssistantWorkspace() {
 
   const handleQuickAction = useCallback(
     (actionId: QuickActionId) => {
-      if (!data) return;
       const action = data.quickActions.find((a) => a.id === actionId);
       if (!action || isTyping) return;
 
@@ -85,19 +79,11 @@ export function AiAssistantWorkspace() {
       ]);
       addAssistantMessage(QUICK_ACTION_RESPONSES[actionId]);
     },
-    [data, isTyping, addAssistantMessage],
+    [data.quickActions, isTyping, addAssistantMessage],
   );
 
-  if (isLoading || !data) {
-    return <AiAssistantLoadingState />;
-  }
-
   return (
-    <div
-      className={`space-y-6 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity] lg:space-y-8 ${
-        ready ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-      }`}
-    >
+    <div className={dashboardPage}>
       <AiAssistantHeader />
       <AiDailySummary summary={data.dailySummary} />
 
@@ -126,4 +112,14 @@ export function AiAssistantWorkspace() {
       <AiGeneratedMessages messages={data.generatedMessages} />
     </div>
   );
+}
+
+export function AiAssistantWorkspace() {
+  const { data, isLoading } = useAiAssistant();
+
+  if (isLoading || !data) {
+    return <AiAssistantLoadingState />;
+  }
+
+  return <AiAssistantLoaded data={data} />;
 }

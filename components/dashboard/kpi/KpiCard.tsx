@@ -1,6 +1,6 @@
 import {
   dashboardCardPadding,
-  dashboardCardStatic,
+  dashboardInteractiveCard,
   dashboardMetricLabel,
   dashboardMetricValue,
   dashboardMetricValueFeatured,
@@ -18,7 +18,7 @@ export function KpiCard({ metric, featured = false }: KpiCardProps) {
   const valueClass = featured ? dashboardMetricValueFeatured : dashboardMetricValue;
 
   return (
-    <article className={`${dashboardCardStatic} ${dashboardCardPadding}`}>
+    <article className={`${dashboardInteractiveCard} ${dashboardCardPadding}`}>
       <p className={dashboardMetricLabel}>{metric.label}</p>
       <p className={`mt-2 ${valueClass}`}>
         <MetricValue

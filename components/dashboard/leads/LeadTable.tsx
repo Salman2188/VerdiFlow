@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Clock, Sparkles } from "lucide-react";
 
+import { dashboardSectionPanel } from "@/components/dashboard/dashboard-styles";
+
 import { LeadContactInfo } from "./LeadContactInfo";
 import { LeadPriorityScore } from "./LeadPriorityScore";
 import { LeadQuickActions } from "./LeadQuickActions";
@@ -19,16 +21,11 @@ type LeadTableProps = {
 
 export function LeadTable({ leads }: LeadTableProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.05] bg-white/[0.02] shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-2xl">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent"
-      />
-
+    <div className={`overflow-hidden ${dashboardSectionPanel}`}>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1050px] border-collapse">
           <thead>
-            <tr className="border-b border-white/[0.05]">
+            <tr className="border-b border-zinc-800/80">
               <th className="px-5 py-4 text-left text-[10px] font-semibold tracking-[0.12em] text-zinc-500 uppercase">
                 AI Score
               </th>
@@ -59,7 +56,7 @@ export function LeadTable({ leads }: LeadTableProps) {
             {leads.map((lead, index) => (
               <tr
                 key={lead.id}
-                className={`group border-b border-white/[0.03] transition-colors duration-300 hover:bg-white/[0.02] ${
+                className={`group border-b border-zinc-800/60 transition-colors duration-150 hover:bg-zinc-900/40 ${
                   index === leads.length - 1 ? "border-b-0" : ""
                 }`}
               >

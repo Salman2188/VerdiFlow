@@ -7,6 +7,7 @@ import {
   pipelineColumnHeader,
 } from "./pipeline-board-styles";
 import { PipelineKanbanCard } from "./PipelineKanbanCard";
+import { PipelineColumnEmptyState } from "./PipelineColumnEmptyState";
 import type { KanbanColumn, KanbanColumnId } from "./types";
 
 const STAGE_DOT: Record<KanbanColumnId, string> = {
@@ -42,7 +43,7 @@ export function PipelineKanbanColumn({
   const isDropTarget = dropTargetId === column.id && draggedLeadId !== null;
 
   return (
-    <div className={pipelineColumn}>
+    <div className={pipelineColumn} id={`pipeline-column-${column.id}`}>
       <div className={pipelineColumnHeader}>
         <div className="flex min-w-0 items-center gap-2">
           <span
@@ -70,11 +71,7 @@ export function PipelineKanbanColumn({
         className={`${pipelineColumnBody} ${isDropTarget ? pipelineColumnBodyActive : ""}`}
       >
         {column.leads.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center rounded-md border border-dashed border-zinc-800 px-3 py-8 text-center">
-            <p className="text-xs text-zinc-600">
-              {isDropTarget ? "Slipp lead her" : "Ingen leads"}
-            </p>
-          </div>
+          <PipelineColumnEmptyState columnId={column.id} isDropTarget={isDropTarget} />
         ) : null}
 
         {column.leads.map((lead) => (

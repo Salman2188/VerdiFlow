@@ -1,4 +1,4 @@
-import { dashboardCardPadding, dashboardCardStatic } from "@/components/dashboard/dashboard-styles";
+import { dashboardCardPadding, dashboardInteractiveCard } from "@/components/dashboard/dashboard-styles";
 
 import type { AiInsight } from "./types";
 
@@ -8,7 +8,7 @@ type InsightCardProps = {
 
 export function InsightCard({ insight }: InsightCardProps) {
   return (
-    <article className={`${dashboardCardStatic} ${dashboardCardPadding}`}>
+    <article className={`${dashboardInteractiveCard} ${dashboardCardPadding}`}>
       {insight.priority ? (
         <p className="text-[11px] font-medium text-zinc-500">
           {insight.priority} prioritet · {insight.confidence}% sikkerhet

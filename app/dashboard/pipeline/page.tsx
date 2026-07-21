@@ -1,4 +1,6 @@
-import { PipelineBoardWorkspace } from "@/components/dashboard/pipeline-board";
+import { Suspense } from "react";
+
+import { PipelineBoardLoadingState, PipelineBoardWorkspace } from "@/components/dashboard/pipeline-board";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { getPipelineBoard } from "@/lib/services/pipeline.service";
 
@@ -9,7 +11,9 @@ export default async function PipelinePage() {
 
   return (
     <DashboardShell pathname="/dashboard/pipeline">
-      <PipelineBoardWorkspace initialBoard={initialBoard} />
+      <Suspense fallback={<PipelineBoardLoadingState />}>
+        <PipelineBoardWorkspace initialBoard={initialBoard} />
+      </Suspense>
     </DashboardShell>
   );
 }

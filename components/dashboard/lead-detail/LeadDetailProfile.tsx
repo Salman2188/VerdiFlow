@@ -1,5 +1,6 @@
 import { User } from "lucide-react";
 
+import { dashboardBadge } from "@/components/dashboard/dashboard-styles";
 import { LeadContactInfo } from "@/components/dashboard/leads/LeadContactInfo";
 
 import { DetailSection } from "./DetailSection";
@@ -19,36 +20,30 @@ export function LeadDetailProfile({ profile }: LeadDetailProfileProps) {
       <div className="space-y-4">
         <LeadContactInfo email={profile.email} phone={profile.phone} />
 
-        <dl className="grid gap-3 text-[12px]">
-          <div className="flex justify-between gap-4 border-b border-white/[0.03] pb-3">
-            <dt className="text-zinc-600">Kilde</dt>
-            <dd className="font-medium text-zinc-300">{profile.source}</dd>
-          </div>
-          <div className="flex justify-between gap-4 border-b border-white/[0.03] pb-3">
-            <dt className="text-zinc-600">Kundetype</dt>
-            <dd className="font-medium text-zinc-300">{profile.buyerType}</dd>
-          </div>
-          <div className="flex justify-between gap-4 border-b border-white/[0.03] pb-3">
-            <dt className="text-zinc-600">Finansiering</dt>
-            <dd className="font-medium text-zinc-300">{profile.financing}</dd>
-          </div>
-          <div className="flex justify-between gap-4 border-b border-white/[0.03] pb-3">
-            <dt className="text-zinc-600">Foretrukket kontakt</dt>
-            <dd className="font-medium text-zinc-300">{profile.preferredContact}</dd>
-          </div>
-          <div className="flex justify-between gap-4">
-            <dt className="text-zinc-600">Kunde siden</dt>
-            <dd className="font-medium text-zinc-300">{profile.createdAt}</dd>
-          </div>
+        <dl className="grid gap-3 text-xs">
+          {[
+            { label: "Kilde", value: profile.source },
+            { label: "Kundetype", value: profile.buyerType },
+            { label: "Finansiering", value: profile.financing },
+            { label: "Foretrukket kontakt", value: profile.preferredContact },
+            { label: "Kunde siden", value: profile.createdAt },
+          ].map((field, index, fields) => (
+            <div
+              key={field.label}
+              className={`flex justify-between gap-4 ${
+                index < fields.length - 1 ? "border-b border-zinc-800/60 pb-3" : ""
+              }`}
+            >
+              <dt className="text-zinc-600">{field.label}</dt>
+              <dd className="text-right font-medium text-zinc-300">{field.value}</dd>
+            </div>
+          ))}
         </dl>
 
         {profile.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 pt-1">
             {profile.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-md border border-white/[0.05] bg-white/[0.03] px-2 py-0.5 text-[10px] font-medium text-zinc-500"
-              >
+              <span key={tag} className={dashboardBadge}>
                 {tag}
               </span>
             ))}

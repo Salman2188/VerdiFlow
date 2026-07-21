@@ -18,7 +18,7 @@ export function AnalyticsAgentLeaderboard({ agents }: AnalyticsAgentLeaderboardP
       <div className="overflow-x-auto">
         <table className="w-full min-w-[600px] border-collapse">
           <thead>
-            <tr className="border-b border-white/[0.05]">
+            <tr className="border-b border-zinc-800">
               {["Megler", "Lukkede salg", "Pipeline-verdi", "Konverteringsrate", "AI-score"].map(
                 (col) => (
                   <th
@@ -35,7 +35,7 @@ export function AnalyticsAgentLeaderboard({ agents }: AnalyticsAgentLeaderboardP
             {agents.map((agent, index) => (
               <tr
                 key={agent.id}
-                className={`border-b border-white/[0.03] transition-colors duration-300 hover:bg-white/[0.02] ${
+                className={`border-b border-zinc-800/60 transition-colors duration-150 hover:bg-zinc-900/40 ${
                   index === agents.length - 1 ? "border-b-0" : ""
                 } ${agent.isTopPerformer ? "bg-emerald-500/[0.04]" : ""}`}
               >

@@ -1,5 +1,10 @@
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+
 import { DashboardSectionHeader } from "@/components/dashboard/DashboardSectionHeader";
 import {
+  dashboardFocusRing,
+  dashboardInteractiveCard,
   dashboardPanel,
   dashboardPanelPadding,
   dashboardSectionDescription,
@@ -33,20 +38,32 @@ export function DashboardHero({ content = DEFAULT_HERO_CONTENT }: DashboardHeroP
             />
             <ol className="space-y-2">
               {content.focusTasks.map((task) => (
-                <li
-                  key={task.id}
-                  className="flex gap-3 rounded-lg border border-zinc-800/80 bg-zinc-950/40 px-3 py-3"
-                >
-                  <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-800 text-xs font-medium tabular-nums text-zinc-300"
-                    aria-hidden="true"
+                <li key={task.id}>
+                  <Link
+                    href={task.href}
+                    className={`group flex gap-3 px-3 py-3 ${dashboardInteractiveCard} ${dashboardFocusRing}`}
                   >
-                    {task.priority}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-zinc-100">{task.title}</p>
-                    <p className="mt-0.5 text-xs text-zinc-500">{task.context}</p>
-                  </div>
+                    <span
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-800 text-xs font-medium tabular-nums text-zinc-300"
+                      aria-hidden="true"
+                    >
+                      {task.priority}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-zinc-100 group-hover:text-zinc-50">
+                        {task.title}
+                      </p>
+                      <p className="mt-0.5 text-xs text-zinc-500">{task.context}</p>
+                      <p className="mt-1 text-[10px] font-medium text-emerald-400/70">
+                        {task.value}
+                      </p>
+                    </div>
+                    <ChevronRight
+                      className="mt-0.5 h-4 w-4 shrink-0 text-zinc-600 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-zinc-400"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                  </Link>
                 </li>
               ))}
             </ol>

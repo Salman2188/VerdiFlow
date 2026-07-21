@@ -22,5 +22,9 @@ export async function DashboardShell({
       return getAuthenticatedNavUser(user);
     })());
 
-  return <DashboardFrame navUser={navUser}>{children}</DashboardFrame>;
+  return (
+    <DashboardFrame navUser={navUser} pathname={pathname}>
+      {children}
+    </DashboardFrame>
+  );
 }

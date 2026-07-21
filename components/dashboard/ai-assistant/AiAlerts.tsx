@@ -20,7 +20,7 @@ const SEVERITY_CONFIG: Record<
   low: {
     icon: Info,
     accent: "text-zinc-400",
-    border: "border-white/[0.05] bg-white/[0.02]",
+    border: "border-zinc-800 bg-zinc-900/30",
   },
 };
 
@@ -44,7 +44,7 @@ export function AiAlerts({ alerts }: AiAlertsProps) {
           return (
             <li
               key={alert.id}
-              className={`rounded-xl border p-4 transition-all duration-300 hover:border-white/[0.08] ${config.border}`}
+              className={`rounded-lg border p-4 transition-colors duration-150 hover:border-zinc-700 ${config.border}`}
             >
               <div className="flex items-start gap-3">
                 <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${config.accent}`} strokeWidth={1.75} />

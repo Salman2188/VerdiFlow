@@ -4,6 +4,8 @@ export type FocusTask = {
   title: string;
   context: string;
   value: string;
+  /** Deep link — lead detail or pipeline stage */
+  href: string;
 };
 
 export type BriefInsight = {

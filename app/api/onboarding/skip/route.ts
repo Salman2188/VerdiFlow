@@ -15,7 +15,7 @@ function loginRedirect(request: Request) {
 export async function POST(request: Request) {
   const cookieStore = await cookies();
   const { url, anonKey } = getSupabaseEnv();
-  let response = NextResponse.redirect(new URL(APP_ROUTES.dashboard, request.url));
+  const response = NextResponse.redirect(new URL(APP_ROUTES.dashboard, request.url));
 
   const supabase = createServerClient<Database>(url, anonKey, {
     cookies: {

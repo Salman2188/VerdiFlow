@@ -8,6 +8,11 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import {
+  dashboardFocusRing,
+  dashboardInteractiveCard,
+} from "@/components/dashboard/dashboard-styles";
+
 import { AiSection } from "@/components/dashboard/ai-assistant/AiSection";
 
 import type { Integration, IntegrationId } from "./types";
@@ -24,7 +29,7 @@ const INTEGRATION_ICONS: Record<IntegrationId, LucideIcon> = {
 const STATUS_STYLE: Record<Integration["status"], string> = {
   aktiv: "border-emerald-500/15 bg-emerald-500/[0.08] text-emerald-400/80",
   feil: "border-rose-500/15 bg-rose-500/[0.08] text-rose-400/80",
-  "ikke tilkoblet": "border-white/[0.05] bg-white/[0.03] text-zinc-500",
+  "ikke tilkoblet": "border-zinc-800 bg-zinc-950/50 text-zinc-500",
 };
 
 type SettingsIntegrationsProps = {
@@ -44,17 +49,9 @@ export function SettingsIntegrations({ integrations }: SettingsIntegrationsProps
           const Icon = INTEGRATION_ICONS[integration.id];
 
           return (
-            <article
-              key={integration.id}
-              className="group relative overflow-hidden rounded-xl border border-white/[0.05] bg-white/[0.02] p-5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-white/[0.07] hover:bg-white/[0.03] hover:shadow-[0_6px_24px_rgba(0,0,0,0.22),0_0_20px_rgba(16,185,129,0.03)]"
-            >
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
-              />
-
+            <article key={integration.id} className={`${dashboardInteractiveCard} p-5`}>
               <div className="flex items-start justify-between gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-500/10 bg-emerald-500/[0.06]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-500/10 bg-emerald-500/[0.06]">
                   <Icon className="h-5 w-5 text-emerald-400/80" strokeWidth={1.75} />
                 </div>
                 <span
@@ -64,12 +61,10 @@ export function SettingsIntegrations({ integrations }: SettingsIntegrationsProps
                 </span>
               </div>
 
-              <h3 className="mt-4 text-[14px] font-semibold tracking-[-0.01em] text-white">
+              <h3 className="mt-4 text-sm font-semibold tracking-[-0.01em] text-zinc-50">
                 {integration.name}
               </h3>
-              <p className="mt-1.5 text-[11px] leading-[1.6] text-zinc-500">
-                {integration.description}
-              </p>
+              <p className="mt-1.5 text-xs leading-5 text-zinc-500">{integration.description}</p>
 
               <div className="mt-4 space-y-1.5 text-[10px] text-zinc-600">
                 <p>
@@ -84,7 +79,7 @@ export function SettingsIntegrations({ integrations }: SettingsIntegrationsProps
 
               <button
                 type="button"
-                className="mt-4 w-full rounded-lg border border-white/[0.05] bg-white/[0.02] px-3 py-2 text-[11px] font-medium text-zinc-400 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.04] hover:text-zinc-200"
+                className={`mt-4 w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors duration-150 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-zinc-200 ${dashboardFocusRing}`}
               >
                 {integration.connected ? "Administrer" : "Koble til"}
               </button>

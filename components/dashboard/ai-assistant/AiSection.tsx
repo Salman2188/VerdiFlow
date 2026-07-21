@@ -1,10 +1,20 @@
 import type { ReactNode } from "react";
 
+import {
+  dashboardBadge,
+  dashboardSectionPanel,
+  dashboardSectionPanelBody,
+  dashboardSectionPanelHeader,
+  dashboardSubdescription,
+  dashboardSubheading,
+} from "@/components/dashboard/dashboard-styles";
+
 type AiSectionProps = {
   title: string;
   subtitle?: string;
   icon?: ReactNode;
   badge?: string;
+  badgeVariant?: "accent" | "neutral";
   children: ReactNode;
   className?: string;
   noPadding?: boolean;
@@ -15,45 +25,36 @@ export function AiSection({
   subtitle,
   icon,
   badge,
+  badgeVariant = "accent",
   children,
   className,
   noPadding = false,
 }: AiSectionProps) {
-  return (
-    <section
-      className={`relative overflow-hidden rounded-2xl border border-white/[0.05] bg-white/[0.02] shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-2xl ${className ?? ""}`}
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent"
-      />
+  const badgeClassName =
+    badgeVariant === "neutral"
+      ? dashboardBadge
+      : "rounded-md border border-emerald-500/20 bg-emerald-500/[0.06] px-2 py-0.5 text-[10px] font-medium text-emerald-400/90";
 
-      <div className="border-b border-white/[0.04] px-5 py-4 lg:px-6">
+  return (
+    <section className={`${dashboardSectionPanel} ${className ?? ""}`}>
+      <div className={dashboardSectionPanelHeader}>
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            {icon && (
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-500/10 bg-emerald-500/[0.06]">
+          <div className="flex min-w-0 items-center gap-2.5">
+            {icon ? (
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950/60">
                 {icon}
               </div>
-            )}
-            <div>
-              <h2 className="text-[13px] font-semibold tracking-[-0.02em] text-white">
-                {title}
-              </h2>
-              {subtitle && (
-                <p className="mt-0.5 text-[11px] text-zinc-600">{subtitle}</p>
-              )}
+            ) : null}
+            <div className="min-w-0">
+              <h2 className={dashboardSubheading}>{title}</h2>
+              {subtitle ? <p className={dashboardSubdescription}>{subtitle}</p> : null}
             </div>
           </div>
-          {badge && (
-            <span className="rounded-md border border-emerald-500/15 bg-emerald-500/[0.06] px-2 py-0.5 text-[10px] font-medium text-emerald-400/80">
-              {badge}
-            </span>
-          )}
+          {badge ? <span className={`shrink-0 ${badgeClassName}`}>{badge}</span> : null}
         </div>
       </div>
 
-      <div className={noPadding ? "" : "p-5 lg:p-6"}>{children}</div>
+      <div className={noPadding ? "" : dashboardSectionPanelBody}>{children}</div>
     </section>
   );
 }

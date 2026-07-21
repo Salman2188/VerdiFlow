@@ -8,10 +8,11 @@ import type { AuthenticatedNavUser } from "@/lib/auth/profile";
 
 type DashboardFrameProps = {
   navUser: AuthenticatedNavUser;
+  pathname?: string;
   children: ReactNode;
 };
 
-export function DashboardFrame({ navUser, children }: DashboardFrameProps) {
+export function DashboardFrame({ navUser, pathname = "/dashboard", children }: DashboardFrameProps) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
@@ -22,7 +23,7 @@ export function DashboardFrame({ navUser, children }: DashboardFrameProps) {
         onMobileClose={() => setMobileNavOpen(false)}
       />
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopNav user={navUser.topNav} onMenuClick={() => setMobileNavOpen(true)} />
+        <TopNav user={navUser.topNav} pathname={pathname} onMenuClick={() => setMobileNavOpen(true)} />
         <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { updateLeadColumn } from "@/lib/services/pipeline-mutations";
 
@@ -14,10 +14,6 @@ type UsePipelineBoardResult = {
 
 export function usePipelineBoard(initialBoard: KanbanBoard): UsePipelineBoardResult {
   const [board, setBoard] = useState(initialBoard);
-
-  useEffect(() => {
-    setBoard(initialBoard);
-  }, [initialBoard]);
 
   const moveLead = useCallback((leadId: string, toColumnId: KanbanColumnId) => {
     setBoard((current) => moveLeadOnBoard(current, leadId, toColumnId));

@@ -1,5 +1,10 @@
 import { FileText, Mail, MessageSquare, Sparkles } from "lucide-react";
 
+import {
+  dashboardFocusRing,
+  dashboardInteractiveCard,
+} from "@/components/dashboard/dashboard-styles";
+
 import { AiSection } from "./AiSection";
 import type { GeneratedMessage, GeneratedMessageType } from "./types";
 
@@ -42,10 +47,7 @@ export function AiGeneratedMessages({ messages }: AiGeneratedMessagesProps) {
           const Icon = config.icon;
 
           return (
-            <article
-              key={message.id}
-              className="group relative overflow-hidden rounded-xl border border-white/[0.05] bg-white/[0.02] p-5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-white/[0.07] hover:bg-white/[0.03]"
-            >
+            <article key={message.id} className={`${dashboardInteractiveCard} p-5`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2.5">
                   <div
@@ -54,7 +56,7 @@ export function AiGeneratedMessages({ messages }: AiGeneratedMessagesProps) {
                     <Icon className="h-3.5 w-3.5" strokeWidth={1.75} />
                   </div>
                   <div>
-                    <p className="text-[12px] font-semibold text-white">{message.recipient}</p>
+                    <p className="text-xs font-semibold text-zinc-50">{message.recipient}</p>
                     <p className="text-[10px] text-zinc-600">
                       {config.label} · {message.relativeTime}
                     </p>
@@ -64,7 +66,7 @@ export function AiGeneratedMessages({ messages }: AiGeneratedMessagesProps) {
                   className={`rounded-md border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
                     message.status === "ready"
                       ? "border-emerald-500/15 bg-emerald-500/[0.08] text-emerald-400/80"
-                      : "border-white/[0.05] bg-white/[0.03] text-zinc-500"
+                      : "border-zinc-800 bg-zinc-950/50 text-zinc-500"
                   }`}
                 >
                   {message.status === "ready" ? "Klar" : "Utkast"}
@@ -75,18 +77,18 @@ export function AiGeneratedMessages({ messages }: AiGeneratedMessagesProps) {
                 <p className="mt-3 text-[11px] font-medium text-zinc-400">{message.subject}</p>
               )}
 
-              <p className="mt-2 text-[12px] leading-[1.7] text-zinc-500">{message.preview}</p>
+              <p className="mt-2 text-xs leading-6 text-zinc-500">{message.preview}</p>
 
               <div className="mt-4 flex gap-2">
                 <button
                   type="button"
-                  className="flex-1 rounded-lg border border-white/[0.05] bg-white/[0.02] px-3 py-2 text-[11px] font-medium text-zinc-400 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.04] hover:text-zinc-200"
+                  className={`flex-1 rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-[11px] font-medium text-zinc-400 transition-colors duration-150 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-zinc-200 ${dashboardFocusRing}`}
                 >
                   Rediger
                 </button>
                 <button
                   type="button"
-                  className="flex-1 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-2 text-[11px] font-medium text-emerald-300 transition-all duration-300 hover:border-emerald-500/30 hover:bg-emerald-500/[0.12]"
+                  className={`flex-1 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-2 text-[11px] font-medium text-emerald-300 transition-colors duration-150 hover:border-emerald-500/30 hover:bg-emerald-500/[0.12] ${dashboardFocusRing}`}
                 >
                   Send
                 </button>

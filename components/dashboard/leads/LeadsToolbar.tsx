@@ -1,5 +1,13 @@
 import { Search, SlidersHorizontal, X } from "lucide-react";
 
+import {
+  dashboardFilterChipActive,
+  dashboardFilterChipInactive,
+  dashboardFocusRing,
+  dashboardInput,
+  dashboardSelect,
+} from "@/components/dashboard/dashboard-styles";
+
 import { SMART_FILTERS } from "./leads-data";
 import type {
   LeadPriorityFilter,
@@ -53,10 +61,10 @@ function SelectFilter<T extends string>({
     <select
       value={value}
       onChange={(event) => onChange(event.target.value as T)}
-      className="h-9 cursor-pointer appearance-none rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 pr-8 text-[12px] font-medium text-zinc-400 transition-all duration-300 hover:border-white/[0.09] hover:bg-white/[0.05] focus:border-emerald-500/25 focus:outline-none focus:ring-1 focus:ring-emerald-500/15"
+      className={dashboardSelect}
     >
       {options.map((option) => (
-        <option key={option.value} value={option.value} className="bg-[#0a0e0c]">
+        <option key={option.value} value={option.value} className="bg-zinc-950">
           {option.label}
         </option>
       ))}
@@ -90,13 +98,13 @@ export function LeadsToolbar({
             value={query.search}
             onChange={(event) => onQueryChange({ ...query, search: event.target.value })}
             placeholder="Søk etter kunde, eiendom, telefon eller e-post..."
-            className="h-10 w-full rounded-xl border border-white/[0.06] bg-white/[0.03] pr-4 pl-10 text-[13px] text-zinc-200 placeholder:text-zinc-600 transition-all duration-300 focus:border-emerald-500/25 focus:bg-white/[0.04] focus:outline-none focus:ring-1 focus:ring-emerald-500/15"
+            className={`${dashboardInput} pl-10 pr-10`}
           />
           {query.search && (
             <button
               type="button"
               onClick={() => onQueryChange({ ...query, search: "" })}
-              className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-600 transition-colors hover:text-zinc-400"
+              className={`absolute top-1/2 right-3 -translate-y-1/2 text-zinc-600 transition-colors hover:text-zinc-400 ${dashboardFocusRing}`}
               aria-label="Tøm søk"
             >
               <X className="h-4 w-4" strokeWidth={1.75} />
@@ -104,7 +112,7 @@ export function LeadsToolbar({
           )}
         </div>
 
-        <div className="flex items-center gap-2 text-[12px] text-zinc-600">
+        <div className="flex items-center gap-2 text-xs text-zinc-600">
           <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={1.75} />
           <span className="tabular-nums">
             {resultCount} {resultCount === 1 ? "lead" : "leads"}
@@ -113,7 +121,7 @@ export function LeadsToolbar({
             <button
               type="button"
               onClick={onClearFilters}
-              className="ml-1 text-emerald-400/70 transition-colors hover:text-emerald-300"
+              className={`ml-1 text-emerald-400/80 transition-colors hover:text-emerald-300 ${dashboardFocusRing}`}
             >
               Nullstill
             </button>
@@ -128,10 +136,10 @@ export function LeadsToolbar({
             type="button"
             onClick={() => onQueryChange({ ...query, smartFilter: filter.id })}
             title={filter.description}
-            className={`shrink-0 rounded-xl border px-3.5 py-2 text-[12px] font-medium transition-all duration-300 ${
+            className={`shrink-0 rounded-lg border px-3.5 py-2 text-xs font-medium transition-colors duration-150 ${dashboardFocusRing} ${
               query.smartFilter === filter.id
-                ? "border-emerald-500/25 bg-emerald-500/[0.1] text-emerald-300"
-                : "border-white/[0.05] bg-white/[0.02] text-zinc-500 hover:border-white/[0.08] hover:bg-white/[0.04] hover:text-zinc-300"
+                ? dashboardFilterChipActive
+                : dashboardFilterChipInactive
             }`}
           >
             {filter.label}

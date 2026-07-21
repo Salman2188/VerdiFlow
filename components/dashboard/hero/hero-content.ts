@@ -12,6 +12,7 @@ export const DEFAULT_HERO_CONTENT: DashboardHeroContent = {
       title: "Send tilbud til Jennifer Walsh",
       context: "Eikeveien 14 · Varm lead",
       value: "Høyest sannsynlighet for lukking",
+      href: "/dashboard/leads/lead-1",
     },
     {
       id: "2",
@@ -19,6 +20,7 @@ export const DEFAULT_HERO_CONTENT: DashboardHeroContent = {
       title: "Bekreft visning kl. 10:00",
       context: "Maple Dr 42 · Torres",
       value: "Visning i dag",
+      href: "/dashboard/leads/lead-4",
     },
     {
       id: "3",
@@ -26,6 +28,7 @@ export const DEFAULT_HERO_CONTENT: DashboardHeroContent = {
       title: "Følg opp Park-familien",
       context: "Motbud mottatt i natt",
       value: "AI-utkast klart",
+      href: "/dashboard/leads/lead-2",
     },
   ],
   briefInsights: [

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { dashboardPage } from "@/components/dashboard/dashboard-styles";
+
 import type { AnalyticsData } from "./types";
 import { AnalyticsAgentLeaderboard } from "./AnalyticsAgentLeaderboard";
 import { AnalyticsAiPerformance } from "./AnalyticsAiPerformance";
@@ -24,8 +26,8 @@ export function AnalyticsWorkspace({ initialData }: AnalyticsWorkspaceProps) {
 
   return (
     <div
-      className={`space-y-6 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity] lg:space-y-8 ${
-        ready ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+      className={`${dashboardPage} transition-opacity duration-300 ${
+        ready ? "opacity-100" : "opacity-0"
       }`}
     >
       <AnalyticsHeader kpis={initialData.topKpis} />

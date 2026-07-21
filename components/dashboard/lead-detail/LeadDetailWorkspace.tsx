@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { dashboardPage } from "@/components/dashboard/dashboard-styles";
 
 import { LeadDetailActivityPanel } from "./LeadDetailActivityPanel";
 import { LeadDetailAiSummary } from "./LeadDetailAiSummary";
@@ -18,26 +18,12 @@ type LeadDetailWorkspaceProps = {
 };
 
 export function LeadDetailWorkspace({ detail }: LeadDetailWorkspaceProps) {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    if (detail) {
-      const frame = requestAnimationFrame(() => setReady(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setReady(false);
-  }, [detail]);
-
   if (!detail) {
     return <LeadDetailNotFound />;
   }
 
   return (
-    <div
-      className={`space-y-6 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity] lg:space-y-8 ${
-        ready ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-      }`}
-    >
+    <div className={dashboardPage}>
       <LeadDetailHeader detail={detail} />
 
       <LeadDetailAiSummary

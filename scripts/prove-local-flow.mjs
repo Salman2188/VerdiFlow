@@ -168,4 +168,41 @@ assert(
 );
 assert(!pipelineHtml.includes("Salgsprosess"), "Pipeline does NOT contain old glass header label 'Salgsprosess'");
 
+const protectedRoutes = [
+  { path: "/dashboard/leads", marker: "Totalt leads" },
+  { path: "/dashboard/analytics", marker: "Analytics" },
+  { path: "/dashboard/ai", marker: "AI Assistent" },
+  { path: "/dashboard/settings", marker: "Settings" },
+];
+
+console.log("\n=== STEP 6: Session persists across all protected routes ===");
+for (const route of protectedRoutes) {
+  const response = await fetchWithCookies(route.path, cookieStore);
+  const html = await response.text();
+  assert(
+    response.status === 200,
+    `GET ${route.path} returns 200 with active session (got ${response.status}, location=${response.headers.get("location") ?? "none"})`,
+  );
+  assert(
+    !html.includes("Welcome back"),
+    `${route.path} does NOT redirect to login page`,
+  );
+  assert(
+    html.includes(route.marker),
+    `${route.path} renders expected workspace content (${route.marker})`,
+  );
+}
+
+console.log("\n=== STEP 7: Revisit pipeline after full navigation ===");
+const pipelineAgain = await fetchWithCookies("/dashboard/pipeline", cookieStore);
+const pipelineAgainHtml = await pipelineAgain.text();
+assert(
+  pipelineAgain.status === 200,
+  `GET /dashboard/pipeline again returns 200 (got ${pipelineAgain.status})`,
+);
+assert(
+  !pipelineAgainHtml.includes("Welcome back"),
+  "Pipeline revisit does NOT redirect to login page",
+);
+
 console.log("\n=== ALL LOCAL PROOF CHECKS PASSED ===");

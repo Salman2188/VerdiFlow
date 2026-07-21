@@ -25,10 +25,10 @@ export function SidebarNavItem({
       href={href}
       onClick={onNavigate}
       aria-current={isActive ? "page" : undefined}
-      className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 ${dashboardFocusRing} ${
+      className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-[background-color,color] duration-150 ${dashboardFocusRing} ${
         isActive
           ? "bg-zinc-800/80 text-zinc-50"
-          : "text-zinc-500 hover:bg-zinc-900 hover:text-zinc-200"
+          : "text-zinc-500 hover:bg-zinc-900/80 hover:text-zinc-200"
       }`}
     >
       {isActive ? (

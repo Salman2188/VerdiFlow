@@ -3,6 +3,11 @@
 import { useCallback, useRef } from "react";
 import { ArrowUp, MessageSquare, Sparkles } from "lucide-react";
 
+import {
+  dashboardFocusRing,
+  dashboardInput,
+} from "@/components/dashboard/dashboard-styles";
+
 import { AiSection } from "./AiSection";
 import type { ChatMessage } from "./types";
 
@@ -53,10 +58,10 @@ export function AiChatPanel({
             className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+              className={`max-w-[85%] rounded-xl px-4 py-3 ${
                 message.role === "user"
-                  ? "border border-emerald-500/20 bg-emerald-500/[0.1] text-emerald-50"
-                  : "border border-white/[0.05] bg-white/[0.03] text-zinc-300"
+                  ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-50"
+                  : "border border-zinc-800 bg-zinc-950/50 text-zinc-300"
               }`}
             >
               {message.role === "assistant" && (
@@ -65,7 +70,7 @@ export function AiChatPanel({
                   <span className="text-[10px] font-medium text-emerald-400/60">VerdiFlow AI</span>
                 </div>
               )}
-              <p className="text-[13px] leading-[1.7] tracking-[-0.01em]">{message.content}</p>
+              <p className="text-sm leading-6 tracking-[-0.01em]">{message.content}</p>
               <p className="mt-1.5 text-[10px] text-zinc-600">{message.timestamp}</p>
             </div>
           </div>
@@ -73,7 +78,7 @@ export function AiChatPanel({
 
         {isTyping && (
           <div className="flex justify-start">
-            <div className="rounded-2xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 px-4 py-3">
               <div className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400/60" />
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400/60 [animation-delay:150ms]" />
@@ -84,7 +89,7 @@ export function AiChatPanel({
         )}
       </div>
 
-      <div className="border-t border-white/[0.04] p-4 lg:p-5">
+      <div className="border-t border-zinc-800 p-4 lg:p-5">
         <div className="flex gap-3">
           <input
             type="text"
@@ -97,13 +102,13 @@ export function AiChatPanel({
               }
             }}
             placeholder="Spør AI om hva som helst..."
-            className="h-11 flex-1 rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 text-[13px] text-zinc-200 placeholder:text-zinc-600 transition-all duration-300 focus:border-emerald-500/25 focus:bg-white/[0.04] focus:outline-none focus:ring-1 focus:ring-emerald-500/15"
+            className={dashboardInput}
           />
           <button
             type="button"
             onClick={handleSend}
             disabled={!input.trim() || isTyping}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/[0.1] text-emerald-300 transition-all duration-300 hover:border-emerald-500/35 hover:bg-emerald-500/[0.15] disabled:opacity-40"
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-300 transition-colors duration-150 hover:border-emerald-500/35 hover:bg-emerald-500/15 disabled:opacity-40 ${dashboardFocusRing}`}
           >
             <ArrowUp className="h-4 w-4" strokeWidth={2} />
           </button>

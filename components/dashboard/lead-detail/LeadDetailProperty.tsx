@@ -28,12 +28,12 @@ export function LeadDetailProperty({ property }: LeadDetailPropertyProps) {
       subtitle="Objekt og pris"
       icon={<Home className="h-3.5 w-3.5 text-emerald-400/80" strokeWidth={1.75} />}
     >
-      <dl className="grid gap-3 text-[12px]">
+      <dl className="grid gap-3 text-xs">
         {fields.map((field, index) => (
           <div
             key={field.label}
             className={`flex justify-between gap-4 ${
-              index < fields.length - 1 ? "border-b border-white/[0.03] pb-3" : ""
+              index < fields.length - 1 ? "border-b border-zinc-800/60 pb-3" : ""
             }`}
           >
             <dt className="shrink-0 text-zinc-600">{field.label}</dt>
