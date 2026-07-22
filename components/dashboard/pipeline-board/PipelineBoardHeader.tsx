@@ -26,9 +26,6 @@ export function PipelineBoardHeader({
   return (
     <div className="space-y-4">
       <DashboardPageHeader
-        label="Arbeidsområde"
-        title="Pipeline"
-        description="Se hele salgsprosessen og flytt deals fremover."
         stats={[
           { label: "Leads", value: stats.total },
           { label: "I forhandling", value: stats.inNegotiation },

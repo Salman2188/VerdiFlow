@@ -5,9 +5,6 @@ import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
 export function AiAssistantHeader() {
   return (
     <DashboardPageHeader
-      label="Intelligent kjerne"
-      title="AI-assistent"
-      description="Spør, planlegg og utfør — AI håndterer resten."
       trailing={
         <div className="flex items-center gap-3 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-3">
           <div className="relative flex h-2.5 w-2.5">

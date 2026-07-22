@@ -33,7 +33,7 @@ export function TopNav({
   const page = getDashboardPageMeta(pathname);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
+    <header className="shrink-0 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
       <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
           {onMenuClick ? (

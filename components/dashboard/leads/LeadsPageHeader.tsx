@@ -11,9 +11,6 @@ type LeadsPageHeaderProps = {
 export function LeadsPageHeader({ stats }: LeadsPageHeaderProps) {
   return (
     <DashboardPageHeader
-      label="Arbeidsområde"
-      title="Leads"
-      description="Hvem bør du kontakte nå for å lukke flere avtaler?"
       stats={[
         { label: "Totalt leads", value: stats.total, icon: Users },
         {

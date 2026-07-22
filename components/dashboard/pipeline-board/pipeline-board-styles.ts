@@ -1,7 +1,7 @@
 import { dashboardFocusRing } from "@/components/dashboard/dashboard-styles";
 
 /** Full-height pipeline workspace inside dashboard shell */
-export const pipelineWorkspace = "flex min-h-[calc(100dvh-7rem)] flex-col gap-5";
+export const pipelineWorkspace = "flex min-h-[calc(100dvh-3.5rem-4rem)] flex-col gap-5 lg:min-h-[calc(100dvh-3.5rem-5rem)]";
 
 export const pipelineHeader = "shrink-0";
 

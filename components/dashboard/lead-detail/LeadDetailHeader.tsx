@@ -26,7 +26,6 @@ export function LeadDetailHeader({ detail }: LeadDetailHeaderProps) {
       </Link>
 
       <DashboardPageHeader
-        label="Lead Intelligence"
         title={lead.customerName}
         description={lead.property}
         stats={[

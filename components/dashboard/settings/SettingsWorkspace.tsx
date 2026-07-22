@@ -4,7 +4,6 @@ import { dashboardPage } from "@/components/dashboard/dashboard-styles";
 
 import { SettingsAi } from "./SettingsAi";
 import { SettingsCompany } from "./SettingsCompany";
-import { SettingsHeader } from "./SettingsHeader";
 import { SettingsIntegrations } from "./SettingsIntegrations";
 import { SettingsLoadingState } from "./SettingsLoadingState";
 import { SettingsNotifications } from "./SettingsNotifications";
@@ -22,8 +21,6 @@ export function SettingsWorkspace() {
 
   return (
     <div className={dashboardPage}>
-      <SettingsHeader />
-
       <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
         <SettingsCompany
           company={data.company}

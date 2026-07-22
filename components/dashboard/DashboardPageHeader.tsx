@@ -19,8 +19,9 @@ export type DashboardPageStat = {
 };
 
 type DashboardPageHeaderProps = {
+  /** Omit when TopNav already shows the page title (list/workspace pages). */
+  title?: string;
   label?: string;
-  title: string;
   description?: string;
   stats?: DashboardPageStat[];
   trailing?: ReactNode;
@@ -57,6 +58,28 @@ export function DashboardPageHeader({
 }: DashboardPageHeaderProps) {
   const hasStats = Boolean(stats && stats.length > 0);
   const hasTrailing = Boolean(trailing);
+  const hasTitleBlock = Boolean(title);
+
+  if (!hasTitleBlock && !hasStats && !hasTrailing) {
+    return null;
+  }
+
+  if (!hasTitleBlock) {
+    return (
+      <header className={dashboardPageHeader}>
+        {hasTrailing && hasStats ? (
+          <div className="flex flex-col gap-6">
+            <div className="flex w-full justify-start lg:justify-end">{trailing}</div>
+            <StatsGrid stats={stats!} />
+          </div>
+        ) : hasStats ? (
+          <StatsGrid stats={stats!} />
+        ) : (
+          <div className="flex justify-start lg:justify-end">{trailing}</div>
+        )}
+      </header>
+    );
+  }
 
   return (
     <header className={dashboardPageHeader}>
