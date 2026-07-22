@@ -16,7 +16,7 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     label: "Arbeidsområde",
   },
   "/dashboard/pipeline": {
-    title: "Pipeline",
+    title: "🚨 THIS IS THE NEW BUILD 🚨",
     description: "Se hele salgsprosessen og flytt deals fremover.",
     label: "Arbeidsområde",
   },

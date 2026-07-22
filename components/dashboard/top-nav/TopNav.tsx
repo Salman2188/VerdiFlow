@@ -51,7 +51,18 @@ export function TopNav({
             {page.label ? (
               <p className={`hidden sm:block ${dashboardSectionLabel}`}>{page.label}</p>
             ) : null}
-            <p className="truncate text-sm font-semibold tracking-[-0.02em] text-zinc-100 sm:text-base">
+            <p
+              className={
+                pathname === "/dashboard/pipeline"
+                  ? "font-bold"
+                  : "truncate text-sm font-semibold tracking-[-0.02em] text-zinc-100 sm:text-base"
+              }
+              style={
+                pathname === "/dashboard/pipeline"
+                  ? { color: "red", fontSize: "2rem", lineHeight: 1.2 }
+                  : undefined
+              }
+            >
               {page.title}
             </p>
             <p className={`hidden truncate md:block ${dashboardSectionDescription}`}>
